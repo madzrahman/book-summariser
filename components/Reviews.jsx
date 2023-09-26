@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from "../styles/reviews.module.css";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
+import LoginModal from "./modals/LoginModal";
 
 export default function Reviews() {
   return (
@@ -82,7 +83,7 @@ export default function Reviews() {
               </div>
             </div>
             <div className={styles.reviews__btn__wrapper}>
-              <button className="btn home__cta--btn">Login</button>
+              <LoginModal />
             </div>
           </div>
         </div>

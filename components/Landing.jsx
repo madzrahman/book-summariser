@@ -1,4 +1,5 @@
 import styles from "../styles/landing.module.css";
+import LoginModal from "./modals/LoginModal";
 
 export default function Landing() {
   return (
@@ -19,7 +20,7 @@ export default function Landing() {
                   <br className={styles.remove__tablet} />
                   and even people who don’t like to read.
                 </div>
-                <button className="btn home__cta--btn">Login</button>
+                <LoginModal />
               </div>
               <figure className={styles.landing__image__mask}>
                 <img
