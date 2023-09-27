@@ -3,7 +3,7 @@ import {
   openLoginModal,
   openSignupModal,
 } from "@/redux/modalSlice";
-import { faUser, faX } from "@fortawesome/free-solid-svg-icons";
+import { faUser, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Modal from "@mui/material/Modal";
 import { useDispatch, useSelector } from "react-redux";
@@ -37,8 +37,8 @@ export default function LoginModal() {
 
       <div className="flex justify-center items-center w-full">
         <Modal open={isOpen} onClose={() => dispatch(closeLoginModal())}>
-          <div className="flex justify-center items-center mt-[175px] flex-col fixed md:w-[35%] w-full md:ml-[20%] ml-0">
-            <div className="relative max-w-[400px] bg-white rounded-lg shadow-sm">
+          <div className="flex justify-center items-center mt-[175px] flex-col fixed md:w-[35%] w-full md:ml-[35%] ml-0">
+            <div className="relative max-w-[400px] w-full bg-white rounded-lg shadow-sm">
               <div className="pt-[48px] px-[32px] pb-[24px]">
                 <div className="text-center text-[20px] font-bold text-[#032b41] mb-[24px]">
                   Log in to Summarist
@@ -103,7 +103,10 @@ export default function LoginModal() {
                 //   dispatch(closeLoginModal());
                 //   dispatch(openSignupModal());
                 // }}
-                onClick={() => dispatch(openSignupModal())}
+                onClick={() => {
+                  dispatch(openSignupModal());
+                  dispatch(closeLoginModal());
+                }}
               >
                 Don't have an account?
               </button>
@@ -111,7 +114,7 @@ export default function LoginModal() {
                 onClick={() => dispatch(closeLoginModal())}
                 className="absolute top-[12px] right-[12px] flex cursor-pointer"
               >
-                <FontAwesomeIcon icon={faX} className="h-[28px] w-[28px]" />
+                <FontAwesomeIcon icon={faXmark} className="h-[28px] w-[28px]" />
               </div>
             </div>
           </div>
