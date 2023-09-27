@@ -1,4 +1,8 @@
-import { closeLoginModal, openLoginModal } from "@/redux/modalSlice";
+import {
+  closeLoginModal,
+  openLoginModal,
+  openSignupModal,
+} from "@/redux/modalSlice";
 import { faUser, faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Modal from "@mui/material/Modal";
@@ -13,11 +17,6 @@ export default function LoginModal() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showCreateAccountModal, setShowCreateAccountModal] = useState(false);
-
-  const handleLoginOrSignup = () => {
-    setShowCreateAccountModal(!showCreateAccountModal);
-  };
 
   const handleLogin = async () => {
     const userCredentials = await createUserWithEmailAndPassword(
@@ -100,7 +99,11 @@ export default function LoginModal() {
               </div>
               <button
                 className="h-[40px] text-center bg-[#f1f6f4] text-[#116be9] w-full rounded-[4px] font-light text-[16px]"
-                onClick={handleLoginOrSignup}
+                // onClick={() => {
+                //   dispatch(closeLoginModal());
+                //   dispatch(openSignupModal());
+                // }}
+                onClick={() => dispatch(openSignupModal())}
               >
                 Don't have an account?
               </button>
