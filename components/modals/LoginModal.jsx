@@ -50,7 +50,7 @@ export default function LoginModal() {
                     Log in to Summarist
                   </div>
                   <button className="relative flex bg-[#3a579d] text-white justify-center w-full h-[40px] rounded-[4px] text-[16px] items-center min-w-[180px]">
-                    <figure className="bg-transparent flex items-center justify-center w-[36px] h-[36px] rounded-[4px] absolute left-[2px]">
+                    <figure className="bg-transparent">
                       <FontAwesomeIcon
                         className="w-[24px] h-[24px]"
                         icon={faUser}
@@ -66,7 +66,7 @@ export default function LoginModal() {
                     <div className="block grow h-[1px] bg-[#bac8ce]"></div>
                   </div>
                   <button className="relative flex bg-[#4285f4] text-white justify-center w-full h-[40px] rounded-[4px] text-[16px] items-center min-w-[180px]">
-                    <figure className="flex items-center justify-center w-[36px] h-[36px] rounded-[4px] bg-white absolute left-[2px]">
+                    <figure className="flex items-center justify-center w-[36px] h-[36px] rounded-[4px] bg-white absolue left-[2px]">
                       <img
                         className="w-[24px] h-[24px]"
                         src="/assets/google.png"
@@ -190,7 +190,7 @@ export default function LoginModal() {
                   Already have an account?
                 </button>
                 <div
-                  onClick={() => dispatch(closeSignupModal())}
+                  onClick={() => dispatch(closeLoginModal())}
                   className="absolute top-[12px] right-[12px] flex cursor-pointer"
                 >
                   <FontAwesomeIcon
@@ -238,7 +238,7 @@ export default function LoginModal() {
                   Go to login
                 </button>
                 <div
-                  onClick={() => dispatch(closePasswordModal())}
+                  onClick={() => dispatch(closeLoginModal())}
                   className="absolute top-[12px] right-[12px] flex cursor-pointer"
                 >
                   <FontAwesomeIcon
