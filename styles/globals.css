@@ -96,3 +96,49 @@ button:disabled {
 .fa-star {
   fill: #0564f1;
 }
+
+.sidebar__height {
+  height: calc(100vh - 60px);
+}
+
+.foryou__height {
+  width: calc(100% - 200px);
+}
+
+.selected__width {
+  width: calc((100% / 3) * 2);
+}
+
+@media (max-width: 576px) {
+  .selected__book {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .burger__menu {
+    display: flex;
+  }
+  .wrapper {
+    margin-left: 0;
+    width: 100%;
+  }
+  .selected__book {
+    width: 100%;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .selected__book--subtitle {
+    width: 100%;
+    font-size: 14px;
+  }
+  .selected__book--content {
+    width: 100%;
+  }
+}
+
+@media (max-width: 1200px) {
+  .selected__book {
+    width: 100%;
+  }
+}

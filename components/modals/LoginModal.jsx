@@ -56,15 +56,10 @@ export default function LoginModal() {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (!currentUser) return;
-      // Adding user details to redux slice
-      dispatch(
-        setUser({
-          email: currentUser?.email,
-          uid: currentUser?.uid,
-        })
-      );
+      console.log(currentUser);
     });
+
+    // Make sure to unsubscribe when the component unmounts
     return unsubscribe;
   }, []);
 
