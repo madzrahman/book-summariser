@@ -2,6 +2,7 @@ import Recommended from "@/components/Recommended";
 import SearchBar from "@/components/SearchBar";
 import Selected from "@/components/Selected";
 import Sidebar from "@/components/Sidebar";
+import Suggested from "@/components/Suggested";
 
 export default function forYou() {
   return (
@@ -14,6 +15,7 @@ export default function forYou() {
             <div className="for-you__wrapper">
               <Selected />
               <Recommended />
+              <Suggested />
             </div>
           </div>
         </div>
