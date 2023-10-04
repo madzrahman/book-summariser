@@ -109,6 +109,16 @@ button:disabled {
   width: calc((100% / 3) * 2);
 }
 
+.scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
 @media (max-width: 576px) {
   .selected__book {
     padding: 16px;
