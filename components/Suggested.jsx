@@ -32,7 +32,7 @@ export default function Suggested() {
             suggestedBooks.map((suggestedBook, index) => (
               <Link
                 key={index}
-                href="direct to book page"
+                href={`/book/${suggestedBook.id}`}
                 className="relative snap-start pt-[32px] px-[12px] pb-[12px] no-underline rounded-[4px] max-w-[200px] w-full"
               >
                 {suggestedBook.subscriptionRequired === true && (
