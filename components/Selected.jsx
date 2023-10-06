@@ -29,7 +29,7 @@ export default function Selected() {
           <Link
             key={index}
             className="flex justify-between selected__width bg-[#fbefd6] rounded-[4px] p-[24px] mb-[24px] gap-[24px] selected__book"
-            href="direct to book page"
+            href={`/book/${selectedBook.id}`}
           >
             <div className="text-[#032b41] w-2/5 selected__book--subtitle">
               {selectedBook.subTitle}
