@@ -152,3 +152,40 @@ button:disabled {
     width: 100%;
   }
 }
+
+/* BOOK INFO */
+
+@media (max-width: 992px) {
+  .bookInfo__wrapper {
+    flex-direction: column;
+    gap: 32px;
+  }
+  .bookInfo__innerbook {
+    order: 1;
+  }
+  .bookInfo__pic {
+    display: flex;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .bookInfo__title {
+    font-size: 24px;
+  }
+  .bookInfo__author {
+    font-size: 14px;
+  }
+  .bookInfo__subtitle {
+    font-size: 18px;
+  }
+  .bookInfo__bookmark {
+    font-size: 16px;
+  }
+  .bookInfo__booktag {
+    font-size: 14px;
+  }
+  .bookInfo__description {
+    font-size: 14px;
+  }
+}
