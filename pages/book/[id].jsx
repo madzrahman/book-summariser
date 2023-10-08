@@ -130,13 +130,26 @@ export default function BookInfo() {
                   What's it about?
                 </div>
 
-                <div className="flex flex-wrap gap-[16px] mb-[16px]">
+                {/* <div className="flex flex-wrap gap-[16px] mb-[16px]">
                   <div className="bg-[#f1f6f4] px-[16px] h-[48px] flex items-center cursor-not-allowed text-[#032b41] font-medium rounded-[4px] bookInfo__booktag">
                     {bookData.tags[0]}
                   </div>
                   <div className="bg-[#f1f6f4] px-[16px] h-[48px] flex items-center cursor-not-allowed text-[#032b41] font-medium rounded-[4px] bookInfo__booktag">
                     {bookData.tags[1]}
                   </div>
+                </div> */}
+
+                <div className="flex flex-wrap gap-[16px] mb-[16px]">
+                  {bookData.tags && bookData.tags[0] && (
+                    <div className="bg-[#f1f6f4] px-[16px] h-[48px] flex items-center cursor-not-allowed text-[#032b41] font-medium rounded-[4px] bookInfo__booktag">
+                      {bookData.tags[0]}
+                    </div>
+                  )}
+                  {bookData.tags && bookData.tags[1] && (
+                    <div className="bg-[#f1f6f4] px-[16px] h-[48px] flex items-center cursor-not-allowed text-[#032b41] font-medium rounded-[4px] bookInfo__booktag">
+                      {bookData.tags[1]}
+                    </div>
+                  )}
                 </div>
 
                 <div className="text-[#032b41] mb-[16px] leading-6 bookInfo__description">
