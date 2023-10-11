@@ -10,36 +10,35 @@ import { useCallback, useEffect, useRef, useState } from "react";
 export default function Controls({
   audioRef,
   progressBarRef,
-  setTimeElapsed,
   duration,
+  setTimeProgress,
 }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const playAnimationRef = useRef();
 
-  const toggleStart = () => {
+  const repeat = useCallback(() => {
+    const currentTime = audioRef.current?.currentTime;
+    setTimeProgress(currentTime);
+    progressBarRef.current.value = currentTime;
+    progressBarRef.current.style.setProperty(
+      "--range-progress",
+      `${(progressBarRef.current.value / duration) * 100}%`
+    );
+
+    playAnimationRef.current = requestAnimationFrame(repeat);
+  }, [audioRef, duration, progressBarRef, setTimeProgress]);
+
+  const togglePlayPause = () => {
     setIsPlaying((prev) => !prev);
   };
 
-  const skipForward10 = () => {
+  const skipForward = () => {
     audioRef.current.currentTime += 10;
   };
 
-  const skipBackward10 = () => {
+  const skipBackward = () => {
     audioRef.current.currentTime -= 10;
   };
-
-  const repeat = useCallback(() => {
-    const currentTime = audioRef.current?.currentTime;
-    setTimeElapsed(currentTime);
-    if (progressBarRef.current) {
-      progressBarRef.current.value = currentTime || 0;
-      progressBarRef.current.style.setProperty(
-        "--range-progress",
-        `${(progressBarRef.current.value / duration) * 100}%`
-      );
-    }
-    playAnimationRef.current = requestAnimationFrame(repeat);
-  }, [audioRef, duration, progressBarRef, setTimeElapsed]);
 
   useEffect(() => {
     if (isPlaying) {
@@ -52,20 +51,38 @@ export default function Controls({
 
   return (
     <>
-      <div className="controls-wrapper">
-        <div className="controls flex gap-5 mx-10">
-          <button onClick={skipBackward10}>
-            <FontAwesomeIcon icon={faBackward} size={28} />
+      <div className="w-2/6 audio__controls--wrapper">
+        <div className="flex items-center justify-center gap-[40px]">
+          <button
+            className="rounded-full cursor-pointer"
+            onClick={skipBackward}
+          >
+            <FontAwesomeIcon
+              className="w-[28px] h-[28px] text-white"
+              icon={faBackward}
+            />
           </button>
-          <button onClick={toggleStart}>
+          <button
+            className="bg-white w-[40px] h-[40px] rounded-full cursor-pointer flex items-center justify-center"
+            onClick={togglePlayPause}
+          >
             {isPlaying ? (
-              <FontAwesomeIcon icon={faPause} size={40} />
+              <FontAwesomeIcon
+                className="text-[#042330] text-[20px] ml-[2px]"
+                icon={faPause}
+              />
             ) : (
-              <FontAwesomeIcon icon={faPlay} size={40} />
+              <FontAwesomeIcon
+                className="text-[#042330] text-[20px] ml-[2px]"
+                icon={faPlay}
+              />
             )}
           </button>
-          <button onClick={skipForward10}>
-            <FontAwesomeIcon icon={faForward} size={28} />
+          <button className="rounded-full cursor-pointer" onClick={skipForward}>
+            <FontAwesomeIcon
+              className="w-[28px] h-[28px] text-white"
+              icon={faForward}
+            />
           </button>
         </div>
       </div>

@@ -1,11 +1,8 @@
-import { faMusic } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
 export default function DisplayTrack({
-  audioRef,
-  progressBarRef,
-  setDuration,
   playerData,
+  audioRef,
+  setDuration,
+  progressBarRef,
 }) {
   const onLoadedMetadata = () => {
     const seconds = audioRef.current.duration;
@@ -15,32 +12,32 @@ export default function DisplayTrack({
 
   return (
     <>
-      <div>
+      <div className="w-2/6 flex gap-[12px] audio__track--wrapper">
         <audio
           src={playerData?.audioLink}
           ref={audioRef}
           onLoadedMetadata={onLoadedMetadata}
         />
-        <div className="audio-info flex items-center my-2">
-          <div className="audio-image">
-            {playerData?.imageLink ? (
+        <div className="flex max-w-[48px]">
+          <figure className="w-[48px] h-[48px] min-w-[48px]">
+            {playerData.imageLink ? (
               <img
-                src={playerData?.imageLink}
-                className="w-[80px] min-w-[60px]"
+                className="block w-full h-full"
+                src={playerData.imageLink}
                 alt="audio avatar"
               />
             ) : (
               <div className="icon-wrapper">
                 <span className="audio-icon">
-                  <FontAwesomeIcon icon={faMusic} />
+                  <div>Loading state incoming</div>
                 </span>
               </div>
             )}
-          </div>
-          <div className="text">
-            <p className="title text-sm">{playerData?.title}</p>
-            <p>{playerData?.author}</p>
-          </div>
+          </figure>
+        </div>
+        <div className="text-white text-[14px] flex flex-col gap-[4px] justify-center">
+          <div>{playerData.title}</div>
+          <div className="text-[#bac8ce]">{playerData.author}</div>
         </div>
       </div>
     </>

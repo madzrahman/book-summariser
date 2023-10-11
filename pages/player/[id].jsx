@@ -30,12 +30,12 @@ export default function Player() {
         <Sidebar
           className={useDifferentClass ? "sidebar2__height" : "sidebar__height"}
         />
-        <div className="relative w-full overflow-y-auto player__height">
+        <div className="relative w-full overflow-y-auto player__height summary">
           <div className="whitespace-pre-line	p-[24px] max-w-[800px] mx-auto">
-            <div className="text-[#032b41] text-[24px] border-b-[1px] border-solid border-[#e1e7ea] pb-[16px] mb-[32px] leading-6 font-[900]">
+            <div className="text-[#032b41] text-[24px] border-b-[1px] border-solid border-[#e1e7ea] pb-[16px] mb-[32px] leading-6 font-[900] summary__booktitle">
               {playerData.title}
             </div>
-            <div className="whitespace-pre-line leading-[1.5] text-[#032b41]">
+            <div className="whitespace-pre-line leading-[1.5] text-[#032b41] summary__booksummary">
               {playerData.summary}
             </div>
           </div>
