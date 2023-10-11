@@ -68,7 +68,7 @@ export default function Controls({
           >
             {isPlaying ? (
               <FontAwesomeIcon
-                className="text-[#042330] text-[20px] ml-[2px]"
+                className="text-[#042330] text-[20px] mr-[1px]"
                 icon={faPause}
               />
             ) : (
