@@ -10,6 +10,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
@@ -96,15 +97,17 @@ export default function BookInfo() {
                 </div>
 
                 <div className="flex gap-[16px] mb-[24px]">
-                  <button className="flex items-center justify-center w-[144px] h-[48px] bg-[#032b41] text-white text-[16px] rounded-[4px] cursor-pointer gap-8px]">
-                    <div className="flex">
-                      <FontAwesomeIcon
-                        icon={faBookOpen}
-                        className="h-[24px] w-[24px]"
-                      />
-                    </div>
-                    <div className="pl-[8px]">Read</div>
-                  </button>
+                  <Link href={`/player/${bookData.id}`}>
+                    <button className="flex items-center justify-center w-[144px] h-[48px] bg-[#032b41] text-white text-[16px] rounded-[4px] cursor-pointer gap-8px]">
+                      <div className="flex">
+                        <FontAwesomeIcon
+                          icon={faBookOpen}
+                          className="h-[24px] w-[24px]"
+                        />
+                      </div>
+                      <div className="pl-[8px]">Read</div>
+                    </button>
+                  </Link>
                   <button className="flex items-center justify-center w-[144px] h-[48px] bg-[#032b41] text-white text-[16px] rounded-[4px] cursor-pointer gap-8px]">
                     <div className="flex">
                       <FontAwesomeIcon

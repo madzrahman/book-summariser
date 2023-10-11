@@ -11,7 +11,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 
-export default function Sidebar() {
+export default function Sidebar({ className }) {
   return (
     <>
       <div className="hidden md:block bg-[#f7faf9] w-[200px] min-w-[200px] fixed top-0 left-0 h-screen z-50">
@@ -21,7 +21,9 @@ export default function Sidebar() {
             src="/assets/logo.png"
           />
         </div>
-        <div className="flex flex-col justify-between sidebar__height pb-[20px] overflow-y-auto">
+        <div
+          className={`flex flex-col justify-between sidebar__height ${className} pb-[20px] overflow-y-auto`}
+        >
           <div className="flex-1 mt-[40px]">
             <Link
               className="flex items-center h-[56px] text-[#032b41] mb-[8px] cursor-pointer"

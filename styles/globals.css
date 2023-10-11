@@ -101,6 +101,14 @@ button:disabled {
   height: calc(100vh - 60px);
 }
 
+.player__height {
+  height: calc(100vh - 160px);
+}
+
+.sidebar2__height {
+  height: calc(100vh - 140px);
+}
+
 .foryou__height {
   width: calc(100% - 200px);
 }
@@ -189,3 +197,20 @@ button:disabled {
     font-size: 14px;
   }
 }
+
+/* MEDIA PLAYER */
+
+input[type="range"] {
+  --range-progress: 0%;
+  width: 80%;
+  /* ... */
+}
+
+input[type="range"]::before {
+  /* ... */
+  background: #f50;
+  width: var(--range-progress);
+  /* ... */
+}
+
+/* ------- */
