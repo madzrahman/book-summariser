@@ -1,3 +1,10 @@
+import { initFirebase } from "@/firebase";
+import {
+  closeLoginModal,
+  closePasswordModal,
+  closeSignupModal,
+  openLoginModal,
+} from "@/redux/modalSlice";
 import {
   faBookBookmark,
   faBookmark,
@@ -9,9 +16,27 @@ import {
   faRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { getAuth } from "firebase/auth";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
 
 export default function Sidebar({ className }) {
+  const app = initFirebase();
+  const auth = getAuth(app);
+  const dispatch = useDispatch();
+
+  const router = useRouter();
+  const email = auth.currentUser?.email;
+
+  const handleSignOut = () => {
+    auth.signOut();
+    dispatch(closeLoginModal());
+    dispatch(closeSignupModal());
+    dispatch(closePasswordModal());
+    router.push("/");
+  };
+
   return (
     <>
       <div className="hidden md:block bg-[#f7faf9] w-[200px] min-w-[200px] fixed top-0 left-0 h-screen z-50">
@@ -107,6 +132,7 @@ export default function Sidebar({ className }) {
             </div>
 
             <div
+              onClick={handleSignOut}
               className="flex items-center h-[56px] text-[#032b41] mb-[8px] cursor-pointer"
               href="/settings"
             >

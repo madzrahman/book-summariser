@@ -18,7 +18,9 @@ import {
 import { auth } from "@/firebase";
 import { useEffect, useState } from "react";
 import { setUser } from "@/redux/userSlice";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
+import { initFirebase } from "@/firebase";
+import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 export default function LoginModal() {
   const isLoginOpen = useSelector((state) => state.modals.loginModalOpen);
@@ -27,6 +29,9 @@ export default function LoginModal() {
 
   const dispatch = useDispatch();
   const router = useRouter();
+  const app = initFirebase();
+  const auth = getAuth(app);
+  const provider = new GoogleAuthProvider();
 
   const [signupEmail, setSignupEmail] = useState("");
   const [signupPassword, setSignupPassword] = useState("");
@@ -52,6 +57,18 @@ export default function LoginModal() {
     } catch (error) {
       setLoginError("Wrong email or password. Please try again.");
     }
+  };
+
+  const handleGoogleLogin = async () => {
+    const result = await signInWithPopup(auth, provider);
+    const user = result.user;
+    if (user) {
+      goToForYouPage();
+    }
+  };
+
+  const goToForYouPage = () => {
+    router.push("/for-you");
   };
 
   useEffect(() => {
@@ -96,7 +113,10 @@ export default function LoginModal() {
                     </span>
                     <div className="block grow h-[1px] bg-[#bac8ce]"></div>
                   </div>
-                  <button className="relative flex bg-[#4285f4] text-white justify-center w-full h-[40px] rounded-[4px] text-[16px] items-center min-w-[180px]">
+                  <button
+                    onClick={handleGoogleLogin}
+                    className="relative flex bg-[#4285f4] text-white justify-center w-full h-[40px] rounded-[4px] text-[16px] items-center min-w-[180px]"
+                  >
                     <figure className="flex items-center justify-center w-[36px] h-[36px] rounded-[4px] bg-white absolute left-[2px]">
                       <img
                         className="w-[24px] h-[24px]"
