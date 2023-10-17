@@ -108,15 +108,17 @@ export default function BookInfo() {
                       <div className="pl-[8px]">Read</div>
                     </button>
                   </Link>
-                  <button className="flex items-center justify-center w-[144px] h-[48px] bg-[#032b41] text-white text-[16px] rounded-[4px] cursor-pointer gap-8px]">
-                    <div className="flex">
-                      <FontAwesomeIcon
-                        icon={faMicrophone}
-                        className="h-[24px] w-[24px]"
-                      />
-                    </div>
-                    <div className="pl-[8px]">Listen</div>
-                  </button>
+                  <Link href={`/player/${bookData.id}`}>
+                    <button className="flex items-center justify-center w-[144px] h-[48px] bg-[#032b41] text-white text-[16px] rounded-[4px] cursor-pointer gap-8px]">
+                      <div className="flex">
+                        <FontAwesomeIcon
+                          icon={faMicrophone}
+                          className="h-[24px] w-[24px]"
+                        />
+                      </div>
+                      <div className="pl-[8px]">Listen</div>
+                    </button>
+                  </Link>
                 </div>
 
                 <div className="flex items-center gap-[8px] text-[#0365f2] font-medium cursor-pointer mb-[40px] text-[18px] bookInfo__bookmark">
