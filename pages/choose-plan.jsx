@@ -9,11 +9,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 
 export default function ChoosePlan() {
-  const [activePlan, setActivePlan] = useState(null);
+  const [activePlan, setActivePlan] = useState("premium-yearly");
 
   const handlePlanClick = (planId) => {
     setActivePlan(planId);
   };
+
+  const isMonthlyPlanActive = activePlan === "premium-monthly";
 
   const accordionData = [
     {
@@ -145,16 +147,24 @@ export default function ChoosePlan() {
 
               <div className="plan__card--cta">
                 <span className="btn--wrapper">
-                  <button className="btn plan__card--button">
-                    <span>Start your free 7 day trial</span>
+                  <button
+                    className={`btn plan__card--button ${
+                      isMonthlyPlanActive ? "monthly-active" : ""
+                    }`}
+                  >
+                    <span>
+                      {isMonthlyPlanActive
+                        ? "Start your first month"
+                        : "Start your free 7 day trial"}
+                    </span>
                   </button>
                 </span>
                 <div className="plan__disclaimer">
-                  Cancel your trial at any time before it ends, and you won’t be
-                  charged.
+                  {isMonthlyPlanActive
+                    ? "30-day money back guarantee, no questions asked"
+                    : "Cancel your trial at any time before it ends, and you won’t be charged."}
                 </div>
               </div>
-
               <div>
                 <div className="faq__wrapper">
                   {accordionData.map(({ title, content }) => (

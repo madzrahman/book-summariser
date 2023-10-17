@@ -543,3 +543,35 @@ input[type="range"]:active::-moz-range-thumb {
   color: #394547;
   line-height: 1.5;
 }
+
+@media (max-width: 768px) {
+  .plan__wrapper-main {
+    margin-left: 0;
+    width: 100%;
+  }
+  .plan__features--wrapper {
+    grid-template-columns: 1fr;
+  }
+  .plan__title {
+    font-size: 26px;
+    margin-bottom: 32px;
+  }
+  .plan__subtitle {
+    font-size: 16px;
+  }
+  .section__title {
+    font-size: 24px;
+  }
+  .plan__card--title {
+    font-size: 16px;
+  }
+  .plan__card--price {
+    font-size: 20px;
+  }
+  .plan__card--text {
+    font-size: 12px;
+  }
+  .accordion__body {
+    font-size: 14px;
+  }
+}
