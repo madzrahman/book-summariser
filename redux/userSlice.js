@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   email: null,
   uid: null,
+  premium: false,
 };
 
 const userSlice = createSlice({
@@ -13,11 +14,14 @@ const userSlice = createSlice({
       (state.email = action.payload.email), (state.uid = action.payload.uid);
     },
     signOutUser: (state) => {
-      (state.email = null), (state.uid = null);
+      (state.email = null), (state.uid = null), (state.premium = false);
+    },
+    upgradeUser: (state, action) => {
+      state.premium = action.payload;
     },
   },
 });
 
-export const { setUser, signOutUser } = userSlice.actions;
+export const { setUser, signOutUser, upgradeUser } = userSlice.actions;
 
 export default userSlice.reducer;

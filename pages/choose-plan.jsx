@@ -1,12 +1,19 @@
 import Accordion from "@/components/Accordion";
 import Footer from "@/components/Footer";
+import { getCheckoutUrl } from "@/components/Stripe/StripePayments";
+import { getPremiumStatus } from "@/components/Stripe/getPremiumStatus";
+import { initFirebase } from "@/firebase";
 import {
   faFileLines,
   faHandshake,
   faSeedling,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
+import { getAuth } from "firebase/auth";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { upgradeUser } from "@/redux/userSlice";
 
 export default function ChoosePlan() {
   const [activePlan, setActivePlan] = useState("premium-yearly");
@@ -16,6 +23,14 @@ export default function ChoosePlan() {
   };
 
   const isMonthlyPlanActive = activePlan === "premium-monthly";
+
+  const app = initFirebase();
+  const auth = getAuth(app);
+  const userName = auth.currentUser?.displayName;
+  const email = auth.currentUser?.email;
+  // Use the above 2 in settings page.
+  const router = useRouter();
+  const dispatch = useDispatch();
 
   const accordionData = [
     {
@@ -40,6 +55,30 @@ export default function ChoosePlan() {
         "You will not be charged if you cancel your trial before its conclusion. While you will not have complete access to the entire Summarist library, you can still expand your knowledge with one curated book per day.",
     },
   ];
+
+  const upgradeToPremiumPlus = async () => {
+    const priceId = "price_1O3HYnH01vvQqMUsSDivqlDt";
+    const checkoutUrl = await getCheckoutUrl(app, priceId);
+    router.push(checkoutUrl);
+    console.log("Upgrade to Premium Plus");
+  };
+
+  const upgradeToPremium = async () => {
+    const priceId = "price_1O3HXbH01vvQqMUs9f2K0G0U";
+    const checkoutUrl = await getCheckoutUrl(app, priceId);
+    router.push(checkoutUrl);
+    console.log("Upgrade to Premium");
+  };
+
+  useEffect(() => {
+    const checkPremium = async () => {
+      const newPremiumStatus = auth.currentUser
+        ? await getPremiumStatus(app)
+        : false;
+      dispatch(upgradeUser(newPremiumStatus));
+    };
+    checkPremium();
+  }, [app, auth.currentUser?.uid]);
 
   return (
     <>
@@ -148,6 +187,11 @@ export default function ChoosePlan() {
               <div className="plan__card--cta">
                 <span className="btn--wrapper">
                   <button
+                    onClick={
+                      isMonthlyPlanActive
+                        ? upgradeToPremiumPlus
+                        : upgradeToPremium
+                    }
                     className={`btn plan__card--button ${
                       isMonthlyPlanActive ? "monthly-active" : ""
                     }`}
@@ -167,8 +211,8 @@ export default function ChoosePlan() {
               </div>
               <div>
                 <div className="faq__wrapper">
-                  {accordionData.map(({ title, content }) => (
-                    <Accordion title={title} content={content} />
+                  {accordionData.map(({ title, content }, index) => (
+                    <Accordion key={index} title={title} content={content} />
                   ))}
                 </div>
               </div>

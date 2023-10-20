@@ -5,6 +5,7 @@ import {
   closeSignupModal,
   openLoginModal,
 } from "@/redux/modalSlice";
+import { signOutUser } from "@/redux/userSlice";
 import {
   faBookBookmark,
   faBookmark,
@@ -34,6 +35,7 @@ export default function Sidebar({ className }) {
     dispatch(closeLoginModal());
     dispatch(closeSignupModal());
     dispatch(closePasswordModal());
+    dispatch(signOutUser());
     router.push("/");
     console.log("logged out");
   };

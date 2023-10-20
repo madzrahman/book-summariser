@@ -42,14 +42,6 @@ export default function LoginModal() {
   const [resetPasswordEmail, setResetPasswordEmail] = useState("");
   const [loginError, setLoginError] = useState("");
 
-  // const handleSignup = async () => {
-  //   const userCredentials = await createUserWithEmailAndPassword(
-  //     auth,
-  //     signupEmail,
-  //     signupPassword
-  //   );
-  // };
-
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
@@ -70,17 +62,6 @@ export default function LoginModal() {
       alert(error);
     }
   };
-
-  // const handleLogin = async () => {
-  //   try {
-  //     await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
-  //     setLoginError("");
-  //     console.log("loggedIn");
-  //     router.push("/for-you");
-  //   } catch (error) {
-  //     setLoginError("Wrong email or password. Please try again.");
-  //   }
-  // };
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -109,6 +90,15 @@ export default function LoginModal() {
     if (user) {
       goToForYouPage();
     }
+  };
+
+  const handleGuestLogin = async () => {
+    const userCredentials = await signInWithEmailAndPassword(
+      auth,
+      "guestuser@guest.com",
+      "123456"
+    );
+    goToForYouPage();
   };
 
   const goToForYouPage = () => {
@@ -141,7 +131,10 @@ export default function LoginModal() {
                   <div className="text-center text-[20px] font-bold text-[#032b41] mb-[24px]">
                     Log in to Summarist
                   </div>
-                  <button className="relative flex bg-[#3a579d] text-white justify-center w-full h-[40px] rounded-[4px] text-[16px] items-center min-w-[180px]">
+                  <button
+                    onClick={handleGuestLogin}
+                    className="relative flex bg-[#3a579d] text-white justify-center w-full h-[40px] rounded-[4px] text-[16px] items-center min-w-[180px]"
+                  >
                     <figure className="bg-transparent flex items-center justify-center w-[36px] h-[36px] rounded-[4px] absolute left-[2px]">
                       <FontAwesomeIcon
                         className="w-[24px] h-[24px]"
