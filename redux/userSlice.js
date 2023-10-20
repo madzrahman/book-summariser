@@ -4,6 +4,7 @@ const initialState = {
   email: null,
   uid: null,
   premium: false,
+  type: "Basic",
 };
 
 const userSlice = createSlice({
@@ -19,9 +20,21 @@ const userSlice = createSlice({
     upgradeUser: (state, action) => {
       state.premium = action.payload;
     },
+    typeOfSubIsYearly: (state) => {
+      state.type = "Premium Plus";
+    },
+    typeOfSubIsMonthly: (state) => {
+      state.type = "Premium";
+    },
   },
 });
 
-export const { setUser, signOutUser, upgradeUser } = userSlice.actions;
+export const {
+  setUser,
+  signOutUser,
+  upgradeUser,
+  typeOfSubIsMonthly,
+  typeOfSubIsYearly,
+} = userSlice.actions;
 
 export default userSlice.reducer;

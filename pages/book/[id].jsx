@@ -31,6 +31,7 @@ export default function BookInfo() {
 
   useEffect(() => {
     fetchBookData();
+    console.log(userIsPremium);
   }, []);
 
   return (

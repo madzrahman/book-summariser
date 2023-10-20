@@ -13,7 +13,11 @@ import { getAuth } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { upgradeUser } from "@/redux/userSlice";
+import {
+  typeOfSubIsMonthly,
+  typeOfSubIsYearly,
+  upgradeUser,
+} from "@/redux/userSlice";
 
 export default function ChoosePlan() {
   const [activePlan, setActivePlan] = useState("premium-yearly");
@@ -60,12 +64,18 @@ export default function ChoosePlan() {
     const priceId = "price_1O3HYnH01vvQqMUsSDivqlDt";
     const checkoutUrl = await getCheckoutUrl(app, priceId);
     router.push(checkoutUrl);
+
+    const dispatch = useDispatch();
+    dispatch(typeOfSubIsYearly());
   };
 
   const upgradeToPremium = async () => {
     const priceId = "price_1O3HXbH01vvQqMUs9f2K0G0U";
     const checkoutUrl = await getCheckoutUrl(app, priceId);
     router.push(checkoutUrl);
+
+    const dispatch = useDispatch();
+    dispatch(typeOfSubIsMonthly());
   };
 
   useEffect(() => {
