@@ -14,11 +14,13 @@ import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 export default function BookInfo() {
   const router = useRouter();
   const { id } = router.query;
   const [bookData, setBookData] = useState({});
+  const userIsPremium = useSelector((state) => state.user.premium);
 
   async function fetchBookData() {
     const { data } = await axios.get(
@@ -98,18 +100,31 @@ export default function BookInfo() {
                 </div>
 
                 <div className="flex gap-[16px] mb-[24px]">
-                  <Link href={`/player/${bookData.id}`}>
-                    <button className="flex items-center justify-center w-[144px] h-[48px] bg-[#032b41] text-white text-[16px] rounded-[4px] cursor-pointer gap-8px]">
-                      <div className="flex">
-                        <FontAwesomeIcon
-                          icon={faBookOpen}
-                          className="h-[24px] w-[24px]"
-                        />
-                      </div>
-                      <div className="pl-[8px]">Read</div>
-                    </button>
-                  </Link>
-
+                  {userIsPremium ? (
+                    <Link href={`/player/${bookData.id}`}>
+                      <button className="flex items-center justify-center w-[144px] h-[48px] bg-[#032b41] text-white text-[16px] rounded-[4px] cursor-pointer gap-8px]">
+                        <div className="flex">
+                          <FontAwesomeIcon
+                            icon={faBookOpen}
+                            className="h-[24px] w-[24px]"
+                          />
+                        </div>
+                        <div className="pl-[8px]">Read</div>
+                      </button>
+                    </Link>
+                  ) : (
+                    <Link href={`/choose-plan`}>
+                      <button className="flex items-center justify-center w-[144px] h-[48px] bg-[#032b41] text-white text-[16px] rounded-[4px] cursor-pointer gap-8px]">
+                        <div className="flex">
+                          <FontAwesomeIcon
+                            icon={faBookOpen}
+                            className="h-[24px] w-[24px]"
+                          />
+                        </div>
+                        <div className="pl-[8px]">Read</div>
+                      </button>
+                    </Link>
+                  )}
                   <Link href={`/player/${bookData.id}`}>
                     <button className="flex items-center justify-center w-[144px] h-[48px] bg-[#032b41] text-white text-[16px] rounded-[4px] cursor-pointer gap-8px]">
                       <div className="flex">
