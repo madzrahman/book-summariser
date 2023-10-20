@@ -35,6 +35,7 @@ export default function Sidebar({ className }) {
     dispatch(closeSignupModal());
     dispatch(closePasswordModal());
     router.push("/");
+    console.log("logged out");
   };
 
   return (

@@ -11,8 +11,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Modal from "@mui/material/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  browserLocalPersistence,
   createUserWithEmailAndPassword,
   onAuthStateChanged,
+  setPersistence,
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { auth } from "@/firebase";
@@ -40,22 +42,64 @@ export default function LoginModal() {
   const [resetPasswordEmail, setResetPasswordEmail] = useState("");
   const [loginError, setLoginError] = useState("");
 
-  const handleSignup = async () => {
-    const userCredentials = await createUserWithEmailAndPassword(
-      auth,
-      signupEmail,
-      signupPassword
-    );
-  };
+  // const handleSignup = async () => {
+  //   const userCredentials = await createUserWithEmailAndPassword(
+  //     auth,
+  //     signupEmail,
+  //     signupPassword
+  //   );
+  // };
 
-  const handleLogin = async () => {
+  const handleSignup = async (e) => {
+    e.preventDefault();
     try {
-      await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
-      setLoginError("");
-      console.log("loggedIn");
-      router.push("/for-you");
+      await setPersistence(auth, browserLocalPersistence);
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        signupEmail,
+        signupPassword
+      );
+      const user = userCredential.user;
+      if (user) {
+        setLoginError("");
+        console.log("loggedIn");
+        goToForYouPage();
+      }
     } catch (error) {
       setLoginError("Wrong email or password. Please try again.");
+      alert(error);
+    }
+  };
+
+  // const handleLogin = async () => {
+  //   try {
+  //     await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
+  //     setLoginError("");
+  //     console.log("loggedIn");
+  //     router.push("/for-you");
+  //   } catch (error) {
+  //     setLoginError("Wrong email or password. Please try again.");
+  //   }
+  // };
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      await setPersistence(auth, browserLocalPersistence);
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        loginEmail,
+        loginPassword
+      );
+      const user = userCredential.user;
+      if (user) {
+        setLoginError("");
+        console.log("loggedIn");
+        goToForYouPage();
+      }
+    } catch (error) {
+      setLoginError("Wrong email or password. Please try again.");
+      alert(error);
     }
   };
 
