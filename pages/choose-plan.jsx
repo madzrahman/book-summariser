@@ -60,14 +60,12 @@ export default function ChoosePlan() {
     const priceId = "price_1O3HYnH01vvQqMUsSDivqlDt";
     const checkoutUrl = await getCheckoutUrl(app, priceId);
     router.push(checkoutUrl);
-    console.log("Upgrade to Premium Plus");
   };
 
   const upgradeToPremium = async () => {
     const priceId = "price_1O3HXbH01vvQqMUs9f2K0G0U";
     const checkoutUrl = await getCheckoutUrl(app, priceId);
     router.push(checkoutUrl);
-    console.log("Upgrade to Premium");
   };
 
   useEffect(() => {
@@ -76,6 +74,7 @@ export default function ChoosePlan() {
         ? await getPremiumStatus(app)
         : false;
       dispatch(upgradeUser(newPremiumStatus));
+      console.log(newPremiumStatus);
     };
     checkPremium();
   }, [app, auth.currentUser?.uid]);

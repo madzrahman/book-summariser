@@ -14,7 +14,7 @@ const userSlice = createSlice({
       (state.email = action.payload.email), (state.uid = action.payload.uid);
     },
     signOutUser: (state) => {
-      (state.email = null), (state.uid = null), (state.premium = false);
+      (state.email = null), (state.uid = null);
     },
     upgradeUser: (state, action) => {
       state.premium = action.payload;
