@@ -17,42 +17,50 @@ import {
   setPersistence,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { auth } from "@/firebase";
+import { db } from "@/firebase";
 import { useEffect, useState } from "react";
-import { setUser } from "@/redux/userSlice";
 import { useRouter } from "next/navigation";
-import { initFirebase } from "@/firebase";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { app } from "@/firebase";
+import { doc, setDoc } from "firebase/firestore";
 
 export default function LoginModal() {
+  // Modal
   const isLoginOpen = useSelector((state) => state.modals.loginModalOpen);
   const isSignupOpen = useSelector((state) => state.modals.signupModalOpen);
   const isPasswordOpen = useSelector((state) => state.modals.passwordModalOpen);
 
-  const dispatch = useDispatch();
-  const router = useRouter();
-  const app = initFirebase();
-  const auth = getAuth(app);
+  // Firebase
+  const auth = getAuth();
   const provider = new GoogleAuthProvider();
 
-  const [signupEmail, setSignupEmail] = useState("");
-  const [signupPassword, setSignupPassword] = useState("");
-  const [loginEmail, setLoginEmail] = useState("");
-  const [loginPassword, setLoginPassword] = useState("");
-  const [resetPasswordEmail, setResetPasswordEmail] = useState("");
+  const dispatch = useDispatch();
+  const router = useRouter();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState("");
 
   const handleSignup = async (e) => {
     e.preventDefault();
+    console.log("called");
+    console.log(email);
     try {
+      console.log("success");
       await setPersistence(auth, browserLocalPersistence);
-      const userCredential = await createUserWithEmailAndPassword(
+      const userCredentials = await createUserWithEmailAndPassword(
         auth,
-        signupEmail,
-        signupPassword
+        email,
+        password
       );
-      const user = userCredential.user;
+      // await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredentials.user;
+      console.log(user);
       if (user) {
+        await setDoc(doc(db, "users", user.uid), {
+          email: user.email,
+          uid: user.uid,
+        });
         setLoginError("");
         console.log("loggedIn");
         goToForYouPage();
@@ -60,6 +68,7 @@ export default function LoginModal() {
     } catch (error) {
       setLoginError("Wrong email or password. Please try again.");
       alert(error);
+      console.error("error", error);
     }
   };
 
@@ -67,13 +76,18 @@ export default function LoginModal() {
     e.preventDefault();
     try {
       await setPersistence(auth, browserLocalPersistence);
-      const userCredential = await signInWithEmailAndPassword(
+      // await signInWithEmailAndPassword(auth, email, password);
+      const userCredentials = await signInWithEmailAndPassword(
         auth,
-        loginEmail,
-        loginPassword
+        email,
+        password
       );
-      const user = userCredential.user;
+      const user = userCredentials.user;
       if (user) {
+        await setDoc(doc(db, "users", user.uid), {
+          email: user.email,
+          uid: user.uid,
+        });
         setLoginError("");
         console.log("loggedIn");
         goToForYouPage();
@@ -93,26 +107,40 @@ export default function LoginModal() {
   };
 
   const handleGuestLogin = async () => {
-    const userCredentials = await signInWithEmailAndPassword(
-      auth,
-      "guestuser@guest.com",
-      "123456"
-    );
-    goToForYouPage();
+    e.preventDefault();
+    try {
+      await setPersistence(auth, browserLocalPersistence);
+      const userCredentials = await signInWithEmailAndPassword(
+        auth,
+        "guestuser@guest.com",
+        "123456"
+      );
+      const user = userCredentials.user;
+      if (user) {
+        await setDoc(doc(db, "users", user.uid), {
+          email: user.email,
+          uid: user.uid,
+        });
+      }
+      goToForYouPage();
+    } catch (error) {
+      setLoginError("Wrong email or password. Please try again");
+      alert(error);
+    }
   };
 
   const goToForYouPage = () => {
     router.push("/for-you");
   };
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      console.log(currentUser);
-    });
+  // useEffect(() => {
+  //   const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+  //     console.log(currentUser);
+  //   });
 
-    // Make sure to unsubscribe when the component unmounts
-    return unsubscribe;
-  }, []);
+  //   // Make sure to unsubscribe when the component unmounts
+  //   return unsubscribe;
+  // }, []);
 
   return (
     <>
@@ -175,13 +203,13 @@ export default function LoginModal() {
                       className="h-[40px] border-[2px] border-solid border-[#bac8ce]rounded-[4px] text-[#394547] px-[12px]"
                       type="text"
                       placeholder="Email Address"
-                      onChange={(e) => setLoginEmail(e.target.value)}
+                      onChange={(e) => setEmail(e.target.value)}
                     />
                     <input
                       className="h-[40px] border-[2px] border-solid border-[#bac8ce]rounded-[4px] text-[#394547] px-[12px]"
                       type="password"
                       placeholder="Password"
-                      onChange={(e) => setLoginPassword(e.target.value)}
+                      onChange={(e) => setPassword(e.target.value)}
                     />
                     <button onClick={handleLogin} className="btn">
                       <span>Login</span>
@@ -244,7 +272,7 @@ export default function LoginModal() {
                         alt=""
                       />
                     </figure>
-                    <div>Sign up with Google</div>
+                    <div onClick={handleGoogleLogin}>Sign up with Google</div>
                   </button>
                   <div className="flex items-center my-[16px]">
                     <div className="block grow h-[1px] bg-[#bac8ce]"></div>
@@ -258,13 +286,13 @@ export default function LoginModal() {
                       className="h-[40px] border-[2px] border-solid border-[#bac8ce]rounded-[4px] text-[#394547] px-[12px]"
                       type="text"
                       placeholder="Email Address"
-                      onChange={(e) => setSignupEmail(e.target.value)}
+                      onChange={(e) => setEmail(e.target.value)}
                     />
                     <input
                       className="h-[40px] border-[2px] border-solid border-[#bac8ce]rounded-[4px] text-[#394547] px-[12px]"
                       type="password"
                       placeholder="Password"
-                      onChange={(e) => setSignupPassword(e.target.value)}
+                      onChange={(e) => setPassword(e.target.value)}
                     />
                     <button onClick={handleSignup} className="btn">
                       <span>Sign up</span>
@@ -312,7 +340,7 @@ export default function LoginModal() {
                       className="h-[40px] border-[2px] border-solid border-[#bac8ce]rounded-[4px] text-[#394547] px-[12px]"
                       type="text"
                       placeholder="Email Address"
-                      onChange={(e) => setResetPasswordEmail(e.target.value)}
+                      onChange={(e) => setEmail(e.target.value)}
                     />
                     <button
                       // onClick={handleLogin}

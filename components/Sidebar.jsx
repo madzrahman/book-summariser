@@ -1,4 +1,4 @@
-import { initFirebase } from "@/firebase";
+import { app, initFirebase } from "@/firebase";
 import {
   closeLoginModal,
   closePasswordModal,
@@ -23,7 +23,6 @@ import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 
 export default function Sidebar({ className }) {
-  const app = initFirebase();
   const auth = getAuth(app);
   const dispatch = useDispatch();
 

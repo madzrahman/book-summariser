@@ -33,8 +33,8 @@ export const {
   setUser,
   signOutUser,
   upgradeUser,
-  typeOfSubIsMonthly,
   typeOfSubIsYearly,
+  typeOfSubIsMonthly,
 } = userSlice.actions;
 
 export default userSlice.reducer;
