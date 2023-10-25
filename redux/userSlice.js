@@ -5,14 +5,15 @@ const initialState = {
   uid: null,
   premium: false,
   type: "Basic",
+  currentUser: null,
 };
 
 const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    setUser: (state, action) => {
-      (state.email = action.payload.email), (state.uid = action.payload.uid);
+    setCurrentUser: (state, action) => {
+      state.currentUser = action.payload;
     },
     signOutUser: (state) => {
       (state.email = null), (state.uid = null);
@@ -30,7 +31,7 @@ const userSlice = createSlice({
 });
 
 export const {
-  setUser,
+  setCurrentUser,
   signOutUser,
   upgradeUser,
   typeOfSubIsYearly,

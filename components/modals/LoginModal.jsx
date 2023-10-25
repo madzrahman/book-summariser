@@ -23,6 +23,7 @@ import { useRouter } from "next/navigation";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { app } from "@/firebase";
 import { doc, setDoc } from "firebase/firestore";
+import { setCurrentUser } from "@/redux/userSlice";
 
 export default function LoginModal() {
   // Modal
@@ -127,6 +128,9 @@ export default function LoginModal() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       console.log(currentUser);
+      if (currentUser) {
+        dispatch(setCurrentUser(currentUser));
+      }
     });
     return unsubscribe;
   }, []);

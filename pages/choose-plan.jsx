@@ -12,26 +12,27 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getAuth } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
 export default function ChoosePlan() {
-  // const auth = getAuth();
   const [activePlan, setActivePlan] = useState("premium-yearly");
   const isMonthlyPlanActive = activePlan === "premium-monthly";
-  const user = getAuth().currentUser;
-  // const user = auth.currentUser;
-  const userIsPremium = usePremiumStatus(user);
+  const currentUser = useSelector((state) => state.user.currentUser);
+  const userIsPremium = usePremiumStatus(currentUser);
   const router = useRouter();
+
+  console.log(currentUser);
 
   const handlePlanClick = (planId) => {
     setActivePlan(planId);
   };
 
   const handleYearlyCheckout = () => {
-    createYearlyCheckout(user.uid);
+    createYearlyCheckout(currentUser.uid);
   };
 
   const handleMonthlyCheckout = () => {
-    createMonthlyCheckout(user.uid);
+    createMonthlyCheckout(currentUser.uid);
   };
 
   const accordionData = [
