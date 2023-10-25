@@ -1,8 +1,8 @@
+import { createMonthlyCheckout } from "@/Stripe/createMonthlyCheckout";
+import { createYearlyCheckout } from "@/Stripe/createYearlyCheckout";
+import usePremiumStatus from "@/Stripe/usePremiumStatus";
 import Accordion from "@/components/Accordion";
 import Footer from "@/components/Footer";
-import { getCheckoutUrl } from "@/components/Stripe/StripePayments";
-import { getPremiumStatus } from "@/components/Stripe/getPremiumStatus";
-import { initFirebase } from "@/firebase";
 import {
   faFileLines,
   faHandshake,
@@ -11,30 +11,28 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getAuth } from "firebase/auth";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import {
-  typeOfSubIsMonthly,
-  typeOfSubIsYearly,
-  upgradeUser,
-} from "@/redux/userSlice";
+import { useState } from "react";
 
 export default function ChoosePlan() {
+  // const auth = getAuth();
   const [activePlan, setActivePlan] = useState("premium-yearly");
+  const isMonthlyPlanActive = activePlan === "premium-monthly";
+  const user = getAuth().currentUser;
+  // const user = auth.currentUser;
+  const userIsPremium = usePremiumStatus(user);
+  const router = useRouter();
 
   const handlePlanClick = (planId) => {
     setActivePlan(planId);
   };
 
-  const isMonthlyPlanActive = activePlan === "premium-monthly";
+  const handleYearlyCheckout = () => {
+    createYearlyCheckout(user.uid);
+  };
 
-  const app = initFirebase();
-  const auth = getAuth(app);
-  const userName = auth.currentUser?.displayName;
-  const email = auth.currentUser?.email;
-  // Use the above 2 in settings page.
-  const router = useRouter();
-  const dispatch = useDispatch();
+  const handleMonthlyCheckout = () => {
+    createMonthlyCheckout(user.uid);
+  };
 
   const accordionData = [
     {
@@ -59,35 +57,6 @@ export default function ChoosePlan() {
         "You will not be charged if you cancel your trial before its conclusion. While you will not have complete access to the entire Summarist library, you can still expand your knowledge with one curated book per day.",
     },
   ];
-
-  const upgradeToPremiumPlus = async () => {
-    const priceId = "price_1O3HYnH01vvQqMUsSDivqlDt";
-    const checkoutUrl = await getCheckoutUrl(app, priceId);
-    router.push(checkoutUrl);
-
-    const dispatch = useDispatch();
-    dispatch(typeOfSubIsYearly());
-  };
-
-  const upgradeToPremium = async () => {
-    const priceId = "price_1O3HXbH01vvQqMUs9f2K0G0U";
-    const checkoutUrl = await getCheckoutUrl(app, priceId);
-    router.push(checkoutUrl);
-
-    const dispatch = useDispatch();
-    dispatch(typeOfSubIsMonthly());
-  };
-
-  useEffect(() => {
-    const checkPremium = async () => {
-      const newPremiumStatus = auth.currentUser
-        ? await getPremiumStatus(app)
-        : false;
-      dispatch(upgradeUser(newPremiumStatus));
-      console.log(newPremiumStatus);
-    };
-    checkPremium();
-  }, [app, auth.currentUser?.uid]);
 
   return (
     <>
@@ -198,8 +167,8 @@ export default function ChoosePlan() {
                   <button
                     onClick={
                       isMonthlyPlanActive
-                        ? upgradeToPremiumPlus
-                        : upgradeToPremium
+                        ? handleYearlyCheckout
+                        : handleMonthlyCheckout
                     }
                     className={`btn plan__card--button ${
                       isMonthlyPlanActive ? "monthly-active" : ""

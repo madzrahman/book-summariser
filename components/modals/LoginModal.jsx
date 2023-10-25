@@ -43,32 +43,25 @@ export default function LoginModal() {
 
   const handleSignup = async (e) => {
     e.preventDefault();
-    console.log("called");
-    console.log(email);
     try {
-      console.log("success");
       await setPersistence(auth, browserLocalPersistence);
       const userCredentials = await createUserWithEmailAndPassword(
         auth,
         email,
         password
       );
-      // await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredentials.user;
-      console.log(user);
       if (user) {
         await setDoc(doc(db, "users", user.uid), {
           email: user.email,
           uid: user.uid,
         });
         setLoginError("");
-        console.log("loggedIn");
         goToForYouPage();
       }
     } catch (error) {
       setLoginError("Wrong email or password. Please try again.");
       alert(error);
-      console.error("error", error);
     }
   };
 
@@ -76,7 +69,6 @@ export default function LoginModal() {
     e.preventDefault();
     try {
       await setPersistence(auth, browserLocalPersistence);
-      // await signInWithEmailAndPassword(auth, email, password);
       const userCredentials = await signInWithEmailAndPassword(
         auth,
         email,
@@ -89,7 +81,6 @@ export default function LoginModal() {
           uid: user.uid,
         });
         setLoginError("");
-        console.log("loggedIn");
         goToForYouPage();
       }
     } catch (error) {
@@ -133,14 +124,12 @@ export default function LoginModal() {
     router.push("/for-you");
   };
 
-  // useEffect(() => {
-  //   const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-  //     console.log(currentUser);
-  //   });
-
-  //   // Make sure to unsubscribe when the component unmounts
-  //   return unsubscribe;
-  // }, []);
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      console.log(currentUser);
+    });
+    return unsubscribe;
+  }, []);
 
   return (
     <>

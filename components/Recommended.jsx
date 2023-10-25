@@ -2,12 +2,7 @@ import { faClock, faStar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getPremiumStatus } from "./Stripe/getPremiumStatus";
-import { initFirebase } from "@/firebase";
-import { getAuth } from "firebase/auth";
 
 export default function Recommended() {
   const [recommendedBooks, setRecommendedBooks] = useState([]);

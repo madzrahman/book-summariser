@@ -1,6 +1,6 @@
+import usePremiumStatus from "@/Stripe/usePremiumStatus";
 import SearchBar from "@/components/SearchBar";
 import Sidebar from "@/components/Sidebar";
-import { getPremiumStatus } from "@/components/Stripe/getPremiumStatus";
 import {
   faBookOpen,
   faBookmark,
@@ -20,7 +20,7 @@ export default function BookInfo() {
   const router = useRouter();
   const { id } = router.query;
   const [bookData, setBookData] = useState({});
-  const isPremium = useSelector((state) => state.user.premium);
+  const userIsPremium = usePremiumStatus();
 
   async function fetchBookData() {
     const { data } = await axios.get(
@@ -31,7 +31,7 @@ export default function BookInfo() {
 
   useEffect(() => {
     fetchBookData();
-    console.log(isPremium);
+    console.log(userIsPremium);
   }, []);
 
   return (
@@ -101,7 +101,7 @@ export default function BookInfo() {
                 </div>
 
                 <div className="flex gap-[16px] mb-[24px]">
-                  {isPremium ? (
+                  {userIsPremium ? (
                     <Link href={`/player/${bookData.id}`}>
                       <button className="flex items-center justify-center w-[144px] h-[48px] bg-[#032b41] text-white text-[16px] rounded-[4px] cursor-pointer gap-8px]">
                         <div className="flex">
