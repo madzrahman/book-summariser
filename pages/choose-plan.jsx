@@ -3,21 +3,24 @@ import { createYearlyCheckout } from "@/Stripe/createYearlyCheckout";
 import usePremiumStatus from "@/Stripe/usePremiumStatus";
 import Accordion from "@/components/Accordion";
 import Footer from "@/components/Footer";
+import { auth } from "@/firebase";
+import { setCurrentUser } from "@/redux/userSlice";
 import {
   faFileLines,
   faHandshake,
   faSeedling,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { getAuth } from "firebase/auth";
+import { onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function ChoosePlan() {
   const [activePlan, setActivePlan] = useState("premium-yearly");
   const isMonthlyPlanActive = activePlan === "premium-monthly";
   const currentUser = useSelector((state) => state.user.currentUser);
+  const dispatch = useDispatch();
   const userIsPremium = usePremiumStatus(currentUser);
   const router = useRouter();
 
@@ -34,6 +37,21 @@ export default function ChoosePlan() {
   const handleMonthlyCheckout = () => {
     createMonthlyCheckout(currentUser.uid);
   };
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      console.log(currentUser);
+      if (currentUser) {
+        const { uid, email } = currentUser;
+        const user = {
+          uid,
+          email,
+        };
+        dispatch(setCurrentUser(user));
+      }
+    });
+    return unsubscribe;
+  }, [auth]);
 
   const accordionData = [
     {

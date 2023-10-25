@@ -129,11 +129,16 @@ export default function LoginModal() {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       console.log(currentUser);
       if (currentUser) {
-        dispatch(setCurrentUser(currentUser));
+        const { uid, email } = currentUser;
+        const user = {
+          uid,
+          email,
+        };
+        dispatch(setCurrentUser(user));
       }
     });
     return unsubscribe;
-  }, []);
+  }, [auth]);
 
   return (
     <>

@@ -1,26 +1,96 @@
-import { faBars, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBars,
+  faClock,
+  faMagnifyingGlass,
+  faSpinner,
+  faStar,
+  faXmark,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import axios from "axios";
+import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 
 export default function SearchBar() {
+  const [showBooksWrapper, setShowBooksWrapper] = useState(false);
+  const [searchResults, setSearchResults] = useState([]);
+  const [searchIcon, setSearchIcon] = useState(faMagnifyingGlass);
+  const [searching, setSearching] = useState(false);
+  const searchBackgroundRef = useRef(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const inputRef = useRef(null);
+
+  const handleInputChange = async (event) => {
+    const inputValue = event.target.value;
+    if (inputValue.length > 0) {
+      setSearchIcon(faXmark);
+      setSearching(true);
+      setShowBooksWrapper(true);
+      setIsLoading(true);
+      try {
+        const { data } = await axios.get(
+          `https://us-central1-summaristt.cloudfunctions.net/getBooksByAuthorOrTitle?search=${inputValue}`
+        );
+        setSearchResults(data);
+      } catch (error) {
+        console.error("Error fetching search results:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    } else {
+      setShowBooksWrapper(false);
+      setSearchResults([]);
+    }
+  };
+
+  const closeSearchResults = () => {
+    setShowBooksWrapper(false);
+    if (inputRef.current) {
+      inputRef.current.value = "";
+    }
+  };
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (
+        searchBackgroundRef.current &&
+        !searchBackgroundRef.current.contains(event.target)
+      ) {
+        setShowBooksWrapper(false);
+      }
+    }
+
+    document.addEventListener("click", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
+
   return (
     <>
-      <div className="bg-white border-b-[1px] border-solid border-[#e1e7ea] h-[80px] z-[1]">
-        <div className="relative flex items-center justify-between px-[32px] max-w-[1070px] mx-auto h-full">
+      <div className="search__background">
+        <div className="search__wrapper">
           <figure>
-            <img src="" alt="" />
+            <img src="logo" alt="" />
           </figure>
-          <div className="flex items-center gap-[24px] max-w-[340px] w-full">
-            <div className="flex items-center w-full">
-              <div className="flex items-center w-full relative gap-[8px]">
+          <div className="search__content">
+            <div className="search">
+              <div className="search__input--wrapper">
                 <input
-                  className="h-[40px] w-full px-[16px] bg-[#f1f6f4] text-[#042330] border-[2px] border-solid border-[#e1e7ea] rounded-[8px]"
+                  className="search__input"
                   placeholder="Search for books"
                   type="text"
+                  onChange={handleInputChange}
+                  ref={inputRef}
                 />
-                <div className="flex items-center absolute h-full right-[8px] justify-end border-l-[2px] border-solid border-[#e1e7ea] pl-[8px]">
+                <div className="search__icon">
                   <FontAwesomeIcon
-                    className="w-[24px] h-[24px] text-[#03314b]"
-                    icon={faMagnifyingGlass}
+                    className={`w-[24px] h-[24px] text-[#03314b] ${
+                      searching ? "iconXMark" : ""
+                    }`}
+                    icon={searching ? faXmark : searchIcon}
+                    onClick={searching ? closeSearchResults : null}
                   />
                 </div>
               </div>
@@ -28,9 +98,49 @@ export default function SearchBar() {
             <div className="hidden burger__menu items-center justify-center cursor-pointer">
               <FontAwesomeIcon className="w-[24px] h-[24px]" icon={faBars} />
             </div>
-            <div className="hidden cursor-pointer"></div>
           </div>
         </div>
+        {showBooksWrapper && (
+          <div className="search__books--wrapper">
+            {isLoading ? (
+              <h1>Loading</h1>
+            ) : searchResults.length === 0 ? (
+              <div>No books found</div>
+            ) : (
+              searchResults.map((book) => (
+                <Link
+                  href={`/book/${book.id}`}
+                  key={book.id}
+                  className="search__book--link"
+                >
+                  <audio src="audio-source"></audio>
+                  <figure className="book__image--wrapper">
+                    <img
+                      src={book.imageLink}
+                      alt=""
+                      className="w-full h-full"
+                    />
+                  </figure>
+                  <div>
+                    <div className="search__book--title">{book.title}</div>
+                    <div className="search__book--author">{book.author}</div>
+                    <div className="search__book--duration">
+                      <div className="recommended__book--details">
+                        <div className="recommended__book--details-icon">
+                          <FontAwesomeIcon
+                            icon={faClock}
+                            className="w-full h-full"
+                          />
+                        </div>
+                        <div class="recommended__book--details-text">03:24</div>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              ))
+            )}
+          </div>
+        )}
       </div>
     </>
   );

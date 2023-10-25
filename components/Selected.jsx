@@ -3,9 +3,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 export default function Selected() {
   const [selectedBooks, setSelectedBooks] = useState([]);
+  const users = useSelector((state) => state.user.currentUser);
 
   async function fetchSelectedBooks() {
     const { data } = await axios.get(
@@ -16,6 +18,7 @@ export default function Selected() {
 
   useEffect(() => {
     fetchSelectedBooks();
+    console.log(users);
   }, []);
 
   return (

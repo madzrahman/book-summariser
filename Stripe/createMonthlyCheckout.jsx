@@ -29,7 +29,7 @@ export async function createMonthlyCheckout(uid) {
       // We have a session, let's redirect to Checkout
       // Init Stripe
       const stripe = await initializeStripe();
-      stripe.redirectToCheckout({ sessionId });
+      stripe?.redirectToCheckout({ sessionId });
     }
   });
 }
