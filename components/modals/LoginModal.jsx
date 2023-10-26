@@ -90,11 +90,22 @@ export default function LoginModal() {
     }
   };
 
-  const handleGoogleLogin = async () => {
-    const result = await signInWithPopup(auth, provider);
-    const user = result.user;
-    if (user) {
-      goToForYouPage();
+  const handleGoogleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      await setPersistence(auth, browserLocalPersistence);
+      const userCredentials = await signInWithPopup(auth, provider);
+      const user = userCredentials.user;
+      if (user) {
+        await setDoc(doc(db, "users", user.uid), {
+          email: user.email,
+          uid: user.uid,
+        });
+        goToForYouPage();
+      }
+    } catch (error) {
+      setLoginError("Error");
+      alert(error);
     }
   };
 

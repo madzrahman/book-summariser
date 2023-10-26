@@ -18,15 +18,16 @@ const userSlice = createSlice({
     signOutUser: (state) => {
       state.email = null;
       state.uid = null;
-    },
-    upgradeUser: (state, action) => {
-      state.premium = action.payload;
+      state.premium = false;
     },
     typeOfSubIsYearly: (state) => {
       state.type = "Premium Plus";
     },
     typeOfSubIsMonthly: (state) => {
       state.type = "Premium";
+    },
+    setPremiumStatus: (state, action) => {
+      state.premium = action.payload;
     },
   },
 });
@@ -37,6 +38,7 @@ export const {
   upgradeUser,
   typeOfSubIsYearly,
   typeOfSubIsMonthly,
+  setPremiumStatus,
 } = userSlice.actions;
 
 export default userSlice.reducer;

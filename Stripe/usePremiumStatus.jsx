@@ -1,22 +1,29 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { onIdTokenChanged } from "firebase/auth";
 import { auth } from "../firebase";
+import { useDispatch, useSelector } from "react-redux";
+import { setPremiumStatus } from "@/redux/userSlice";
 
 export default function usePremiumStatus(user) {
-  const [premiumStatus, setPremiumStatus] = useState(false);
+  const dispatch = useDispatch();
+  const premiumStatus = useSelector((state) => state.user.premium);
 
-  useEffect(() => {
-    return onIdTokenChanged(auth, async (user) => {
-      if (user) {
-        const tokenResult = await user.getIdTokenResult();
-        if (tokenResult.claims.stripeRole === "premium") {
-          setPremiumStatus(true);
+  useEffect(
+    () => {
+      return onIdTokenChanged(auth, async (user) => {
+        if (user) {
+          const tokenResult = await user.getIdTokenResult();
+          dispatch(
+            setPremiumStatus(tokenResult.claims.stripeRole === "premium")
+          );
+        } else {
+          dispatch(setPremiumStatus(false));
         }
-      } else {
-        setPremiumStatus(false);
-      }
-    });
-  }, [user]);
+      });
+    },
+    [user],
+    dispatch
+  );
 
   return premiumStatus;
 }

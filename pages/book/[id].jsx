@@ -21,10 +21,7 @@ export default function BookInfo() {
   const router = useRouter();
   const { id } = router.query;
   const [bookData, setBookData] = useState({});
-  const currentUser = useSelector((state) => state.user.currentUser);
-  let [isPremium, setIsPremium] = useState();
-  const user = currentUser;
-  isPremium = usePremiumStatus(user);
+  const isPremium = useSelector((state) => state.user.premium);
 
   async function fetchBookData() {
     const { data } = await axios.get(
@@ -35,7 +32,6 @@ export default function BookInfo() {
 
   useEffect(() => {
     fetchBookData();
-    console.log(isPremium);
   }, []);
 
   return (
@@ -105,31 +101,6 @@ export default function BookInfo() {
                 </div>
 
                 <div className="flex gap-[16px] mb-[24px]">
-                  {/* {isPremium && bookData.subscriptionRequired ? (
-                    <Link href={`/player/${bookData.id}`}>
-                      <button className="flex items-center justify-center w-[144px] h-[48px] bg-[#032b41] text-white text-[16px] rounded-[4px] cursor-pointer gap-8px]">
-                        <div className="flex">
-                          <FontAwesomeIcon
-                            icon={faBookOpen}
-                            className="h-[24px] w-[24px]"
-                          />
-                        </div>
-                        <div className="pl-[8px]">Read</div>
-                      </button>
-                    </Link>
-                  ) : (
-                    <Link href={`/choose-plan`}>
-                      <button className="flex items-center justify-center w-[144px] h-[48px] bg-[#032b41] text-white text-[16px] rounded-[4px] cursor-pointer gap-8px]">
-                        <div className="flex">
-                          <FontAwesomeIcon
-                            icon={faBookOpen}
-                            className="h-[24px] w-[24px]"
-                          />
-                        </div>
-                        <div className="pl-[8px]">Read</div>
-                      </button>
-                    </Link>
-                  )} */}
                   {bookData.subscriptionRequired ? (
                     isPremium ? (
                       <Link href={`/player/${bookData.id}`}>

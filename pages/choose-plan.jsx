@@ -20,11 +20,12 @@ export default function ChoosePlan() {
   const [activePlan, setActivePlan] = useState("premium-yearly");
   const isMonthlyPlanActive = activePlan === "premium-monthly";
   const currentUser = useSelector((state) => state.user.currentUser);
+  const isUserPremium = useSelector((state) => state.user.premium);
   const dispatch = useDispatch();
-  const userIsPremium = usePremiumStatus(currentUser);
+  const userIsPremium = usePremiumStatus(isUserPremium);
   const router = useRouter();
 
-  console.log(currentUser);
+  console.log(isUserPremium);
 
   const handlePlanClick = (planId) => {
     setActivePlan(planId);
@@ -186,8 +187,8 @@ export default function ChoosePlan() {
                   <button
                     onClick={
                       isMonthlyPlanActive
-                        ? handleYearlyCheckout
-                        : handleMonthlyCheckout
+                        ? handleMonthlyCheckout
+                        : handleYearlyCheckout
                     }
                     className={`btn plan__card--button ${
                       isMonthlyPlanActive ? "monthly-active" : ""
