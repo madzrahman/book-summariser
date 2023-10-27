@@ -4,17 +4,26 @@ import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import SelectedSkeleton from "./Skeleton/SelectedSkeleton";
 
 export default function Selected() {
   const [selectedBooks, setSelectedBooks] = useState([]);
   const users = useSelector((state) => state.user.currentUser);
+  const [loading, setLoading] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   async function fetchSelectedBooks() {
+    setLoading(true);
     const { data } = await axios.get(
       "https://us-central1-summaristt.cloudfunctions.net/getBooks?status=selected"
     );
+    setLoading(false);
     setSelectedBooks(data || []);
   }
+
+  const handleImageLoad = () => {
+    setImageLoaded(true);
+  };
 
   useEffect(() => {
     fetchSelectedBooks();
@@ -27,7 +36,10 @@ export default function Selected() {
         Selected just for you
       </div>
       {/* <audio src="" /> Shows on inspect element */}
-      {selectedBooks.length > 0 &&
+      {loading ? (
+        <SelectedSkeleton />
+      ) : (
+        selectedBooks.length > 0 &&
         selectedBooks.map((selectedBook, index) => (
           <Link
             key={index}
@@ -41,9 +53,12 @@ export default function Selected() {
             <div className="flex gap-[16px] w-3/5 selected__book--content">
               <figure className="h-[140px] w-[140px] min-w-[140px]">
                 <img
-                  className="w-full h-full"
+                  className={`w-full h-full ${
+                    imageLoaded ? "" : "selected__book--img-skeleton"
+                  }`}
                   src={selectedBook.imageLink}
                   alt=""
+                  onLoad={handleImageLoad}
                 />
               </figure>
               <div className="w-full">
@@ -67,7 +82,8 @@ export default function Selected() {
               </div>
             </div>
           </Link>
-        ))}
+        ))
+      )}
     </>
   );
 }

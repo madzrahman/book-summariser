@@ -6,7 +6,11 @@ import {
   openPasswordModal,
   openSignupModal,
 } from "@/redux/modalSlice";
-import { faUser, faXmark } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCircleNotch,
+  faUser,
+  faXmark,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Modal from "@mui/material/Modal";
 import { useDispatch, useSelector } from "react-redux";
@@ -42,7 +46,13 @@ export default function LoginModal() {
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState("");
 
+  const [isGuestLoading, setIsGuestLoading] = useState(false);
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+  const [isLoginLoading, setIsLoginLoading] = useState(false);
+  const [isSignupLoading, setIsSignupLoading] = useState(false);
+
   const handleSignup = async (e) => {
+    setIsSignupLoading(true);
     e.preventDefault();
     try {
       await setPersistence(auth, browserLocalPersistence);
@@ -57,6 +67,7 @@ export default function LoginModal() {
           email: user.email,
           uid: user.uid,
         });
+        setIsSignupLoading(false);
         setLoginError("");
         goToForYouPage();
       }
@@ -67,6 +78,7 @@ export default function LoginModal() {
   };
 
   const handleLogin = async (e) => {
+    setIsLoginLoading(true);
     e.preventDefault();
     try {
       await setPersistence(auth, browserLocalPersistence);
@@ -81,6 +93,7 @@ export default function LoginModal() {
           email: user.email,
           uid: user.uid,
         });
+        setIsLoginLoading(false);
         setLoginError("");
         goToForYouPage();
       }
@@ -91,6 +104,7 @@ export default function LoginModal() {
   };
 
   const handleGoogleLogin = async (e) => {
+    setIsGoogleLoading(true);
     e.preventDefault();
     try {
       await setPersistence(auth, browserLocalPersistence);
@@ -101,6 +115,7 @@ export default function LoginModal() {
           email: user.email,
           uid: user.uid,
         });
+        setIsGoogleLoading(false);
         goToForYouPage();
       }
     } catch (error) {
@@ -109,7 +124,8 @@ export default function LoginModal() {
     }
   };
 
-  const handleGuestLogin = async () => {
+  const handleGuestLogin = async (e) => {
+    setIsGuestLoading(true);
     e.preventDefault();
     try {
       await setPersistence(auth, browserLocalPersistence);
@@ -125,6 +141,7 @@ export default function LoginModal() {
           uid: user.uid,
         });
       }
+      setIsGuestLoading(false);
       goToForYouPage();
     } catch (error) {
       setLoginError("Wrong email or password. Please try again");
@@ -168,18 +185,36 @@ export default function LoginModal() {
                   <div className="text-center text-[20px] font-bold text-[#032b41] mb-[24px]">
                     Log in to Summarist
                   </div>
-                  <button
-                    onClick={handleGuestLogin}
-                    className="relative flex bg-[#3a579d] text-white justify-center w-full h-[40px] rounded-[4px] text-[16px] items-center min-w-[180px]"
-                  >
-                    <figure className="bg-transparent flex items-center justify-center w-[36px] h-[36px] rounded-[4px] absolute left-[2px]">
+                  {!isGuestLoading ? (
+                    <button
+                      onClick={handleGuestLogin}
+                      className="relative flex bg-[#3a579d] text-white justify-center w-full h-[40px] rounded-[4px] text-[16px] items-center min-w-[180px]"
+                    >
+                      <figure className="bg-transparent flex items-center justify-center w-[36px] h-[36px] rounded-[4px] absolute left-[2px]">
+                        <FontAwesomeIcon
+                          className="w-[24px] h-[24px]"
+                          icon={faUser}
+                        />
+                      </figure>
+                      <div>Login as Guest</div>
+                    </button>
+                  ) : (
+                    <button
+                      onClick={handleGuestLogin}
+                      className="relative flex bg-[#3a579d] text-white justify-center w-full h-[40px] rounded-[4px] text-[16px] items-center min-w-[180px]"
+                    >
+                      <figure className="bg-transparent flex items-center justify-center w-[36px] h-[36px] rounded-[4px] absolute left-[2px]">
+                        <FontAwesomeIcon
+                          className="w-[24px] h-[24px]"
+                          icon={faUser}
+                        />
+                      </figure>
                       <FontAwesomeIcon
-                        className="w-[24px] h-[24px]"
-                        icon={faUser}
+                        className="animate-spin"
+                        icon={faCircleNotch}
                       />
-                    </figure>
-                    <div>Login as Guest</div>
-                  </button>
+                    </button>
+                  )}
                   <div className="flex items-center my-[16px]">
                     <div className="block grow h-[1px] bg-[#bac8ce]"></div>
                     <span className="mx-[24px] text-[14px] text-[#394547] font-medium">
@@ -187,19 +222,38 @@ export default function LoginModal() {
                     </span>
                     <div className="block grow h-[1px] bg-[#bac8ce]"></div>
                   </div>
-                  <button
-                    onClick={handleGoogleLogin}
-                    className="relative flex bg-[#4285f4] text-white justify-center w-full h-[40px] rounded-[4px] text-[16px] items-center min-w-[180px]"
-                  >
-                    <figure className="flex items-center justify-center w-[36px] h-[36px] rounded-[4px] bg-white absolute left-[2px]">
-                      <img
-                        className="w-[24px] h-[24px]"
-                        src="/assets/google.png"
-                        alt=""
+                  {!isGoogleLoading ? (
+                    <button
+                      onClick={handleGoogleLogin}
+                      className="relative flex bg-[#4285f4] text-white justify-center w-full h-[40px] rounded-[4px] text-[16px] items-center min-w-[180px]"
+                    >
+                      <figure className="flex items-center justify-center w-[36px] h-[36px] rounded-[4px] bg-white absolute left-[2px]">
+                        <img
+                          className="w-[24px] h-[24px]"
+                          src="/assets/google.png"
+                          alt=""
+                        />
+                      </figure>
+                      <div>Login with Google</div>
+                    </button>
+                  ) : (
+                    <button
+                      onClick={handleGoogleLogin}
+                      className="relative flex bg-[#4285f4] text-white justify-center w-full h-[40px] rounded-[4px] text-[16px] items-center min-w-[180px]"
+                    >
+                      <figure className="flex items-center justify-center w-[36px] h-[36px] rounded-[4px] bg-white absolute left-[2px]">
+                        <img
+                          className="w-[24px] h-[24px]"
+                          src="/assets/google.png"
+                          alt=""
+                        />
+                      </figure>
+                      <FontAwesomeIcon
+                        className="animate-spin"
+                        icon={faCircleNotch}
                       />
-                    </figure>
-                    <div>Login with Google</div>
-                  </button>
+                    </button>
+                  )}
                   <div className="flex items-center my-[16px]">
                     <div className="block grow h-[1px] bg-[#bac8ce]"></div>
                     <span className="mx-[24px] text-[14px] text-[#394547] font-medium">
@@ -220,9 +274,18 @@ export default function LoginModal() {
                       placeholder="Password"
                       onChange={(e) => setPassword(e.target.value)}
                     />
-                    <button onClick={handleLogin} className="btn">
-                      <span>Login</span>
-                    </button>
+                    {!isLoginLoading ? (
+                      <button onClick={handleLogin} className="btn">
+                        <span>Login</span>
+                      </button>
+                    ) : (
+                      <button onClick={handleLogin} className="btn">
+                        <FontAwesomeIcon
+                          className="animate-spin text-white"
+                          icon={faCircleNotch}
+                        />
+                      </button>
+                    )}
                     {loginError && (
                       <p className="text-red-500 mt-2">{loginError}</p>
                     )}
@@ -273,16 +336,32 @@ export default function LoginModal() {
                   <div className="text-center text-[20px] font-bold text-[#032b41] mb-[24px]">
                     Sign up to Summarist
                   </div>
-                  <button className="relative flex bg-[#4285f4] text-white justify-center w-full h-[40px] rounded-[4px] text-[16px] items-center min-w-[180px]">
-                    <figure className="flex items-center justify-center w-[36px] h-[36px] rounded-[4px] bg-white absolute left-[2px]">
-                      <img
-                        className="w-[24px] h-[24px]"
-                        src="/assets/google.png"
-                        alt=""
+                  {!isGoogleLoading ? (
+                    <button className="relative flex bg-[#4285f4] text-white justify-center w-full h-[40px] rounded-[4px] text-[16px] items-center min-w-[180px]">
+                      <figure className="flex items-center justify-center w-[36px] h-[36px] rounded-[4px] bg-white absolute left-[2px]">
+                        <img
+                          className="w-[24px] h-[24px]"
+                          src="/assets/google.png"
+                          alt=""
+                        />
+                      </figure>
+                      <div onClick={handleGoogleLogin}>Sign up with Google</div>
+                    </button>
+                  ) : (
+                    <button className="relative flex bg-[#4285f4] text-white justify-center w-full h-[40px] rounded-[4px] text-[16px] items-center min-w-[180px]">
+                      <figure className="flex items-center justify-center w-[36px] h-[36px] rounded-[4px] bg-white absolute left-[2px]">
+                        <img
+                          className="w-[24px] h-[24px]"
+                          src="/assets/google.png"
+                          alt=""
+                        />
+                      </figure>
+                      <FontAwesomeIcon
+                        className="animate-spin text-white"
+                        icon={faCircleNotch}
                       />
-                    </figure>
-                    <div onClick={handleGoogleLogin}>Sign up with Google</div>
-                  </button>
+                    </button>
+                  )}
                   <div className="flex items-center my-[16px]">
                     <div className="block grow h-[1px] bg-[#bac8ce]"></div>
                     <span className="mx-[24px] text-[14px] text-[#394547] font-medium">
@@ -303,9 +382,18 @@ export default function LoginModal() {
                       placeholder="Password"
                       onChange={(e) => setPassword(e.target.value)}
                     />
-                    <button onClick={handleSignup} className="btn">
-                      <span>Sign up</span>
-                    </button>
+                    {!isSignupLoading ? (
+                      <button onClick={handleSignup} className="btn">
+                        <span>Sign up</span>
+                      </button>
+                    ) : (
+                      <button onClick={handleSignup} className="btn">
+                        <FontAwesomeIcon
+                          className="animate-spin text-white"
+                          icon={faCircleNotch}
+                        />
+                      </button>
+                    )}
                   </form>
                 </div>
                 <button

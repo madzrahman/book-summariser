@@ -99,48 +99,51 @@ export default function SearchBar() {
               <FontAwesomeIcon className="w-[24px] h-[24px]" icon={faBars} />
             </div>
           </div>
-        </div>
-        {showBooksWrapper && (
-          <div className="search__books--wrapper">
-            {isLoading ? (
-              <h1>Loading</h1>
-            ) : searchResults.length === 0 ? (
-              <div>No books found</div>
-            ) : (
-              searchResults.map((book) => (
-                <Link
-                  href={`/book/${book.id}`}
-                  key={book.id}
-                  className="search__book--link"
-                >
-                  <audio src="audio-source"></audio>
-                  <figure className="book__image--wrapper">
-                    <img
-                      src={book.imageLink}
-                      alt=""
-                      className="w-full h-full"
-                    />
-                  </figure>
-                  <div>
-                    <div className="search__book--title">{book.title}</div>
-                    <div className="search__book--author">{book.author}</div>
-                    <div className="search__book--duration">
-                      <div className="recommended__book--details">
-                        <div className="recommended__book--details-icon">
-                          <FontAwesomeIcon
-                            icon={faClock}
-                            className="w-full h-full"
-                          />
+
+          {showBooksWrapper && (
+            <div className="search__books--wrapper">
+              {isLoading ? (
+                <h1>Loading</h1>
+              ) : searchResults.length === 0 ? (
+                <div>No books found</div>
+              ) : (
+                searchResults.map((book) => (
+                  <Link
+                    href={`/book/${book.id}`}
+                    key={book.id}
+                    className="search__book--link"
+                  >
+                    <audio src="audio-source"></audio>
+                    <figure className="book__image--wrapper">
+                      <img
+                        src={book.imageLink}
+                        alt=""
+                        className="w-full h-full"
+                      />
+                    </figure>
+                    <div>
+                      <div className="search__book--title">{book.title}</div>
+                      <div className="search__book--author">{book.author}</div>
+                      <div className="search__book--duration">
+                        <div className="recommended__book--details">
+                          <div className="recommended__book--details-icon">
+                            <FontAwesomeIcon
+                              icon={faClock}
+                              className="w-full h-full"
+                            />
+                          </div>
+                          <div class="recommended__book--details-text">
+                            03:24
+                          </div>
                         </div>
-                        <div class="recommended__book--details-text">03:24</div>
                       </div>
                     </div>
-                  </div>
-                </Link>
-              ))
-            )}
-          </div>
-        )}
+                  </Link>
+                ))
+              )}
+            </div>
+          )}
+        </div>
       </div>
     </>
   );
