@@ -12,7 +12,7 @@ export default function Settings() {
   const currentUser = useSelector((state) => state.user.currentUser);
   const isPremium = useSelector((state) => state.user.premium);
 
-  console.log(currentUser);
+  console.log(isPremium);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {

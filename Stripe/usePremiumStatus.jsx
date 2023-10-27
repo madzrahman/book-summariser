@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { onIdTokenChanged } from "firebase/auth";
+import { useEffect, useState } from "react";
+import { getAuth, onIdTokenChanged } from "firebase/auth";
 import { auth } from "../firebase";
 import { useDispatch, useSelector } from "react-redux";
 import { setPremiumStatus } from "@/redux/userSlice";

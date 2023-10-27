@@ -12,20 +12,18 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { onAuthStateChanged } from "firebase/auth";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function ChoosePlan() {
   const [activePlan, setActivePlan] = useState("premium-yearly");
   const isMonthlyPlanActive = activePlan === "premium-monthly";
-  const currentUser = useSelector((state) => state.user.currentUser);
-  const isUserPremium = useSelector((state) => state.user.premium);
-  const dispatch = useDispatch();
-  const userIsPremium = usePremiumStatus(isUserPremium);
-  const router = useRouter();
 
-  console.log(isUserPremium);
+  const dispatch = useDispatch();
+  const currentUser = useSelector((state) => state.user.currentUser);
+
+  const isUserPremium = useSelector((state) => state.user.premium);
+  const userIsPremium = usePremiumStatus(isUserPremium);
 
   const handlePlanClick = (planId) => {
     setActivePlan(planId);

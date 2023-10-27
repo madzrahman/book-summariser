@@ -27,9 +27,9 @@ import { setCurrentUser } from "@/redux/userSlice";
 
 export default function LoginModal() {
   // Modal
-  const isLoginOpen = useSelector((state) => state.modals.loginModalOpen);
-  const isSignupOpen = useSelector((state) => state.modals.signupModalOpen);
-  const isPasswordOpen = useSelector((state) => state.modals.passwordModalOpen);
+  const isLoginOpen = useSelector((state) => state.modal.loginModalOpen);
+  const isSignupOpen = useSelector((state) => state.modal.signupModalOpen);
+  const isPasswordOpen = useSelector((state) => state.modal.passwordModalOpen);
 
   // Firebase
   const auth = getAuth();
