@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 export default function DisplayTrack({
   playerData,
   audioRef,
@@ -27,17 +29,21 @@ export default function DisplayTrack({
                 alt="audio avatar"
               />
             ) : (
-              <div className="icon-wrapper">
-                <span className="audio-icon">
-                  <div>Loading state incoming</div>
-                </span>
-              </div>
+              <div className="audio__track--img skeleton-box"></div>
             )}
           </figure>
         </div>
         <div className="text-white text-[14px] flex flex-col gap-[4px] justify-center">
-          <div>{playerData.title}</div>
-          <div className="text-[#bac8ce]">{playerData.author}</div>
+          {playerData.title ? (
+            <div>{playerData.title}</div>
+          ) : (
+            <div className="audio__track--details-title"></div>
+          )}
+          {playerData.author ? (
+            <div className="text-[#bac8ce]">{playerData.author}</div>
+          ) : (
+            <div className="audio__track--details-author"></div>
+          )}
         </div>
       </div>
     </>

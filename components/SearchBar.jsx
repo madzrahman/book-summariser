@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import SearchBarSkeleton from "./Skeleton/SearchBarSkeleton";
 
 export default function SearchBar() {
   const [showBooksWrapper, setShowBooksWrapper] = useState(false);
@@ -103,7 +104,7 @@ export default function SearchBar() {
           {showBooksWrapper && (
             <div className="search__books--wrapper">
               {isLoading ? (
-                <h1>Loading</h1>
+                new Array(5).fill(0).map((_, index) => <SearchBarSkeleton />)
               ) : searchResults.length === 0 ? (
                 <div>No books found</div>
               ) : (

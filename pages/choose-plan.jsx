@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import { auth } from "@/firebase";
 import { setCurrentUser } from "@/redux/userSlice";
 import {
+  faCircleNotch,
   faFileLines,
   faHandshake,
   faSeedling,
@@ -18,6 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 export default function ChoosePlan() {
   const [activePlan, setActivePlan] = useState("premium-yearly");
   const isMonthlyPlanActive = activePlan === "premium-monthly";
+  const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.user.currentUser);
@@ -30,10 +32,12 @@ export default function ChoosePlan() {
   };
 
   const handleYearlyCheckout = () => {
+    setLoading(true);
     createYearlyCheckout(currentUser.uid);
   };
 
   const handleMonthlyCheckout = () => {
+    setLoading(true);
     createMonthlyCheckout(currentUser.uid);
   };
 
@@ -184,7 +188,9 @@ export default function ChoosePlan() {
                 <span className="btn--wrapper">
                   <button
                     onClick={
-                      isMonthlyPlanActive
+                      loading
+                        ? null
+                        : isMonthlyPlanActive
                         ? handleMonthlyCheckout
                         : handleYearlyCheckout
                     }
@@ -193,9 +199,16 @@ export default function ChoosePlan() {
                     }`}
                   >
                     <span>
-                      {isMonthlyPlanActive
-                        ? "Start your first month"
-                        : "Start your free 7 day trial"}
+                      {loading ? (
+                        <FontAwesomeIcon
+                          className="animate-spin text-white"
+                          icon={faCircleNotch}
+                        />
+                      ) : isMonthlyPlanActive ? (
+                        "Start your first month"
+                      ) : (
+                        "Start your free 7 day trial"
+                      )}
                     </span>
                   </button>
                 </span>
