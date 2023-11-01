@@ -2,6 +2,7 @@ import { app, initFirebase } from "@/firebase";
 import {
   closeLoginModal,
   closePasswordModal,
+  closeSidebarModal,
   closeSignupModal,
   openLoginModal,
 } from "@/redux/modalSlice";
@@ -20,14 +21,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getAuth } from "firebase/auth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useDispatch } from "react-redux";
+import { useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function Sidebar({ className }) {
   const auth = getAuth(app);
   const dispatch = useDispatch();
+  const sidebarRef = useRef(null);
+  const isOpen = useSelector((state) => state.modal.openSidebar);
 
   const router = useRouter();
-  const email = auth.currentUser?.email;
+  // const email = auth.currentUser?.email;
+
+  console.log(isOpen);
 
   const handleSignOut = () => {
     auth.signOut();
@@ -41,6 +47,12 @@ export default function Sidebar({ className }) {
 
   return (
     <>
+      {isOpen && (
+        <>
+          <div className="sidebar__overlay"></div>
+          <div className="sidebar" ref={sidebarRef}></div>
+        </>
+      )}
       <div className="hidden md:block bg-[#f7faf9] w-[200px] min-w-[200px] fixed top-0 left-0 h-screen z-50">
         <div className="flex items-center justify-center h-[60px] pt-[16px] max-w-[160px] mx-auto">
           <img

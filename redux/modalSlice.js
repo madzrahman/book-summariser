@@ -4,6 +4,7 @@ const initialState = {
   loginModalOpen: false,
   signupModalOpen: false,
   passwordModalOpen: false,
+  openSidebar: false,
 };
 
 const modalSlice = createSlice({
@@ -28,6 +29,12 @@ const modalSlice = createSlice({
     closePasswordModal: (state) => {
       state.passwordModalOpen = false;
     },
+    openSidebarModal: (state) => {
+      state.openSidebar = true;
+    },
+    closeSidebarModal: (state) => {
+      state.openSidebar = false;
+    },
   },
 });
 
@@ -38,6 +45,8 @@ export const {
   closeSignupModal,
   openPasswordModal,
   closePasswordModal,
+  openSidebarModal,
+  closeSidebarModal,
 } = modalSlice.actions;
 
 export default modalSlice.reducer;

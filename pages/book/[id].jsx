@@ -30,13 +30,17 @@ export default function BookInfo() {
     const { data } = await axios.get(
       `https://us-central1-summaristt.cloudfunctions.net/getBook?id=${id}`
     );
-    setLoading(false);
-    setBookData(data || {});
+    if (data) {
+      setLoading(false);
+      setBookData(data);
+    }
+    // setLoading(false);
+    // setBookData(data || {});
   }
 
   useEffect(() => {
     fetchBookData();
-  }, []);
+  }, [id]);
 
   return (
     <>

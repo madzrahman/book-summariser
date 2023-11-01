@@ -11,6 +11,8 @@ import axios from "axios";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import SearchBarSkeleton from "./Skeleton/SearchBarSkeleton";
+import { useDispatch, useSelector } from "react-redux";
+import { openSidebarModal } from "@/redux/modalSlice";
 
 export default function SearchBar() {
   const [showBooksWrapper, setShowBooksWrapper] = useState(false);
@@ -20,6 +22,7 @@ export default function SearchBar() {
   const searchBackgroundRef = useRef(null);
   const [isLoading, setIsLoading] = useState(false);
   const inputRef = useRef(null);
+  const dispatch = useDispatch();
 
   const handleInputChange = async (event) => {
     const inputValue = event.target.value;
@@ -96,7 +99,10 @@ export default function SearchBar() {
                 </div>
               </div>
             </div>
-            <div className="hidden burger__menu items-center justify-center cursor-pointer">
+            <div
+              onClick={() => dispatch(openSidebarModal())}
+              className="hidden burger__menu items-center justify-center cursor-pointer"
+            >
               <FontAwesomeIcon className="w-[24px] h-[24px]" icon={faBars} />
             </div>
           </div>
