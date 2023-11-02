@@ -20,13 +20,17 @@ export default function Player() {
     const { data } = await axios.get(
       `https://us-central1-summaristt.cloudfunctions.net/getBook?id=${id}`
     );
-    setLoading(false);
-    setPlayerData(data || {});
+    if (data) {
+      setLoading(false);
+      setPlayerData(data);
+    }
+    // setLoading(false);
+    // setPlayerData(data || {});
   }
 
   useEffect(() => {
     fetchPlayerData();
-  }, []);
+  }, [id]);
 
   return (
     <>
