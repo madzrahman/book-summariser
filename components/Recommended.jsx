@@ -38,7 +38,9 @@ export default function Recommended() {
         </div>
         <div className="scrollbar flex overflow-x-auto gap-[16px] snap-x snap-mandatory mb-[32px]">
           {loading
-            ? new Array(6).fill(0).map((_, index) => <RecommendedSkeleton />)
+            ? new Array(6)
+                .fill(0)
+                .map((_, index) => <RecommendedSkeleton key={index} />)
             : recommendedBooks.length > 0 &&
               recommendedBooks.map((recommendedBook, index) => (
                 <Link
@@ -51,7 +53,6 @@ export default function Recommended() {
                       Premium
                     </div>
                   )}
-                  {/* <audio src=""></audio> */}
                   <figure className="mb-[8px] w-[172px] h-[172px]">
                     <img
                       className={`w-full h-full ${

@@ -27,7 +27,6 @@ export default function Selected() {
 
   useEffect(() => {
     fetchSelectedBooks();
-    console.log(users);
   }, []);
 
   return (
@@ -35,7 +34,6 @@ export default function Selected() {
       <div className="text-[22px] font-bold text-[#032b41] mb-[16px]">
         Selected just for you
       </div>
-      {/* <audio src="" /> Shows on inspect element */}
       {loading ? (
         <SelectedSkeleton />
       ) : (

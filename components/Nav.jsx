@@ -1,4 +1,3 @@
-import Image from "next/image";
 import styles from "../styles/nav.module.css";
 
 export default function Nav() {
@@ -7,11 +6,6 @@ export default function Nav() {
       <nav className={styles.nav}>
         <div className={styles.wrapper}>
           <figure className={styles.figure}>
-            {/* <Image
-              src="/assets/logo.png"
-              className={styles.img}
-              objectFit="contain"
-            /> */}
             <img className={styles.img} src="/assets/logo.png" alt="logo" />
           </figure>
           <ul className={styles.ul}>

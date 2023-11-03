@@ -1,4 +1,3 @@
-import usePremiumStatus from "@/Stripe/usePremiumStatus";
 import SearchBar from "@/components/SearchBar";
 import Sidebar from "@/components/Sidebar";
 import BookSkeleton from "@/components/Skeleton/BookSkeleton";
@@ -12,7 +11,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
-import { getAuth } from "firebase/auth";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -34,8 +32,6 @@ export default function BookInfo() {
       setLoading(false);
       setBookData(data);
     }
-    // setLoading(false);
-    // setBookData(data || {});
   }
 
   useEffect(() => {
@@ -48,7 +44,6 @@ export default function BookInfo() {
         <SearchBar />
         <Sidebar />
         <div className="row">
-          {/* <audio src=""></audio> Add this later I guess */}
           <div className="container">
             {loading ? (
               <BookSkeleton />
@@ -191,7 +186,6 @@ export default function BookInfo() {
                       </Link>
                     )}
                   </div>
-
                   <div className="flex items-center gap-[8px] text-[#0365f2] font-medium cursor-pointer mb-[40px] text-[18px] bookInfo__bookmark">
                     <div className="flex w-[20px] h-[20px]">
                       <FontAwesomeIcon
@@ -201,20 +195,9 @@ export default function BookInfo() {
                     </div>
                     <div>Add title to My Library</div>
                   </div>
-
                   <div className="text-[18px] text-[#032b41] mb-[16px] font-semibold">
                     What's it about?
                   </div>
-
-                  {/* <div className="flex flex-wrap gap-[16px] mb-[16px]">
-                  <div className="bg-[#f1f6f4] px-[16px] h-[48px] flex items-center cursor-not-allowed text-[#032b41] font-medium rounded-[4px] bookInfo__booktag">
-                    {bookData.tags[0]}
-                  </div>
-                  <div className="bg-[#f1f6f4] px-[16px] h-[48px] flex items-center cursor-not-allowed text-[#032b41] font-medium rounded-[4px] bookInfo__booktag">
-                    {bookData.tags[1]}
-                  </div>
-                </div> */}
-
                   <div className="flex flex-wrap gap-[16px] mb-[16px]">
                     {bookData.tags && bookData.tags[0] && (
                       <div className="bg-[#f1f6f4] px-[16px] h-[48px] flex items-center cursor-not-allowed text-[#032b41] font-medium rounded-[4px] bookInfo__booktag">

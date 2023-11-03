@@ -25,17 +25,14 @@ import { db } from "@/firebase";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { app } from "@/firebase";
 import { doc, setDoc } from "firebase/firestore";
 import { setCurrentUser } from "@/redux/userSlice";
 
 export default function LoginModal() {
-  // Modal
   const isLoginOpen = useSelector((state) => state.modal.loginModalOpen);
   const isSignupOpen = useSelector((state) => state.modal.signupModalOpen);
   const isPasswordOpen = useSelector((state) => state.modal.passwordModalOpen);
 
-  // Firebase
   const auth = getAuth();
   const provider = new GoogleAuthProvider();
 
@@ -155,7 +152,6 @@ export default function LoginModal() {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      console.log(currentUser);
       if (currentUser) {
         const { uid, email } = currentUser;
         const user = {

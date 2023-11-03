@@ -2,8 +2,6 @@ import {
   faBars,
   faClock,
   faMagnifyingGlass,
-  faSpinner,
-  faStar,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -11,7 +9,7 @@ import axios from "axios";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import SearchBarSkeleton from "./Skeleton/SearchBarSkeleton";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { openSidebarModal } from "@/redux/modalSlice";
 
 export default function SearchBar() {

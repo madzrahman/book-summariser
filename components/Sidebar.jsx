@@ -1,14 +1,12 @@
-import { app, initFirebase } from "@/firebase";
+import { app } from "@/firebase";
 import {
   closeLoginModal,
   closePasswordModal,
   closeSidebarModal,
   closeSignupModal,
-  openLoginModal,
 } from "@/redux/modalSlice";
 import { signOutUser } from "@/redux/userSlice";
 import {
-  faBookBookmark,
   faBookmark,
   faCircleQuestion,
   faGear,
@@ -31,9 +29,6 @@ export default function Sidebar({ className }) {
   const isOpen = useSelector((state) => state.modal.openSidebar);
 
   const router = useRouter();
-  // const email = auth.currentUser?.email;
-
-  console.log(isOpen);
 
   const handleSignOut = () => {
     auth.signOut();

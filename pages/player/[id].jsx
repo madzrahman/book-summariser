@@ -24,8 +24,6 @@ export default function Player() {
       setLoading(false);
       setPlayerData(data);
     }
-    // setLoading(false);
-    // setPlayerData(data || {});
   }
 
   useEffect(() => {
@@ -57,8 +55,6 @@ export default function Player() {
               </div>
             </div>
           )}
-
-          {/* AUDIO PLAYER HERE */}
           <AudioPlayer playerData={playerData} />
         </div>
       </div>
