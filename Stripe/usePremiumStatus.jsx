@@ -8,22 +8,16 @@ export default function usePremiumStatus(user) {
   const dispatch = useDispatch();
   const premiumStatus = useSelector((state) => state.user.premium);
 
-  useEffect(
-    () => {
-      return onIdTokenChanged(auth, async (user) => {
-        if (user) {
-          const tokenResult = await user.getIdTokenResult();
-          dispatch(
-            setPremiumStatus(tokenResult.claims.stripeRole === "premium")
-          );
-        } else {
-          dispatch(setPremiumStatus(false));
-        }
-      });
-    },
-    [user],
-    dispatch
-  );
+  useEffect(() => {
+    return onIdTokenChanged(auth, async (user) => {
+      if (user) {
+        const tokenResult = await user.getIdTokenResult();
+        dispatch(setPremiumStatus(tokenResult.claims.stripeRole === "premium"));
+      } else {
+        dispatch(setPremiumStatus(false));
+      }
+    });
+  }, [user]);
 
   return premiumStatus;
 }
