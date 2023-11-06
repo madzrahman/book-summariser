@@ -14,8 +14,8 @@ export async function createMonthlyCheckout(uid) {
     collection(doc(firestore, "users", uid), "checkout_sessions"),
     {
       price: "price_1O5G0CH01vvQqMUsNCPyD1w1",
-      success_url: window.location.origin,
-      cancel_url: window.location.origin,
+      success_url: `${window.location.origin}/settings`,
+      cancel_url: `${window.location.origin}/for-you`,
     }
   );
 
